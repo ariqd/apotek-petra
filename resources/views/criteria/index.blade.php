@@ -1,15 +1,16 @@
 <x-stisla-layout>
     <x-slot name="title">
-        Home
+        Kriteria
     </x-slot>
 
     <div class="section-header">
-        <h1>Home</h1>
+        <h1>Kriteria</h1>
+        <a href="#" class="btn btn-primary btn-sm ml-3">
+            <i class="fas fa-plus"></i> Tambah Kriteria
+        </a>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">3 produk mencapai limit stok</h2>
-        {{-- <p class="section-lead">This page is just an example for you to create your own page.</p> --}}
         <div class="card">
 
             <div class="table-responsive">
@@ -17,56 +18,56 @@
                     <thead class="thead-dark ">
                         <tr scope="row">
                             <th scope="col" class="w-auto"></th>
-                            <th scope="col" class="w-auto">Nama Obat</th>
-                            <th scope="col" class="w-auto">Stok Saat Ini</th>
-                            <th scope="col" class="w-auto">Limit Stok</th>
-                            <th scope="col" class="w-auto">Jumlah Kurang</th>
+                            <th scope="col" class="w-auto">Nama Kriteria</th>
+                            <th scope="col" class="w-auto">Bobot</th>
+                            <th scope="col" class="w-auto">Jenis</th>
                             <th scope="col" class="w-auto"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
+                            <td>
+                                1
                             </td>
-                            <td class="font-weight-bold">Stimuno</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-danger">- 5</td>
+                            <td class="font-weight-bold">Lama pengiriman obat</td>
+                            <td>20%</td>
+                            <td>Cost</td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-primary">
-                                    Pilih Supplier
+                                    Edit
                                 </a>
+                                <a href="#" class="btn btn-light ml-3">
+                                    Delete
+                                </a>
+                            </td>
                             </td>
                         </tr>
                         <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
-                            </td>
-                            <td class="font-weight-bold">CDR Vitamin C</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-danger">- 5</td>
+                            <td>2</td>
+                            <td class="font-weight-bold">Ketersediaan obat</td>
+                            <td>20%</td>
+                            <td>Benefit</td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-primary">
-                                    Pilih Supplier
+                                    Edit
                                 </a>
+                                <a href="#" class="btn btn-light ml-3">
+                                    Delete
+                                </a>
+                            </td>
                             </td>
                         </tr>
                         <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
-                            </td>
-                            <td class="font-weight-bold">Mylanta</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-danger">- 5</td>
+                            <td>3</td>
+                            <td class="font-weight-bold">Harga obat</td>
+                            <td>25%</td>
+                            <td>Cost</td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-primary">
-                                    Pilih Supplier
+                                    Edit
+                                </a>
+                                <a href="#" class="btn btn-light ml-3">
+                                    Delete
                                 </a>
                             </td>
                         </tr>
