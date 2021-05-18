@@ -23,7 +23,7 @@ class MedicineController extends Controller
      */
     public function create()
     {
-        //
+        return view('medicines.form');
     }
 
     /**

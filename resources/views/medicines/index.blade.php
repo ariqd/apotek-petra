@@ -5,6 +5,9 @@
 
     <div class="section-header">
         <h1>Obat</h1>
+        <a href="{{ route('obat.create') }}" class="btn btn-primary btn-sm ml-3">
+            <i class="fas fa-plus"></i> Tambah Obat
+        </a>
     </div>
 
     <div class="section-body">
