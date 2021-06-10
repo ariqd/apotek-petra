@@ -1,6 +1,6 @@
 <x-stisla-layout>
     <x-slot name="title">
-        {{ @$edit ? 'Edit' : 'Tambah' }} Obat {{ @$edit ? $obat->name : '' }}
+        {{ @$edit ? 'Edit' : 'Tambah' }} Obat {{ @$edit ? @$obat->name : '' }}
     </x-slot>
 
     <x-slot name="js">
@@ -21,7 +21,7 @@
     </x-slot>
 
     <div class="section-header">
-        <h1> {{ @$edit ? 'Edit' : 'Tambah' }} Obat {{ @$edit ? $obat->name : '' }}</h1>
+        <h1> {{ @$edit ? 'Edit' : 'Tambah' }} Obat {{ @$edit ? @$obat->name : '' }}</h1>
         <a href="{{ route('obat.index') }}" class="btn btn-light btn-sm ml-3">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
@@ -30,7 +30,7 @@
     <div class="section-body">
         <div class="card">
             <div class="card-body">
-                <form action="{{ @$edit ? route('obat.update', $obat) : route('obat.store') }}" method="POST"
+                <form action="{{ @$edit ? '' : route('obat.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     {{ @$edit ? method_field('PUT') : '' }}
@@ -52,7 +52,7 @@
 
                                 <div class="col-12 mb-2">
                                     @if (@$edit)
-                                    <img id="preview-image" src="{{ asset($obat->image) }}" alt="preview image"
+                                    <img id="preview-image" src="{{ asset(@$obat->image) }}" alt="preview image"
                                         style="max-height: 250px;">
                                     @else
                                     <img id="preview-image-before-upload"
@@ -77,6 +77,7 @@
                                         value="{{ @$edit ? @$obat->price : old('price')}}">
                                 </div>
                             </div>
+                            @if (@!$edit)
                             <div class="form-group">
                                 <label for="stock">Stok</label>
                                 <div class="input-group mb-3">
@@ -87,15 +88,17 @@
                                     <span class="input-group-text" id="basic-addon1">pcs</span>
                                 </div>
                             </div>
+                            @endif
                             <div class="form-group">
-                                <label for="stock_limit">Limit Stok</label>
-                                <div class="input-group mb-3">
+                                <label for="stock_limit">Reorder Point</label>
+                                <div class="input-group mb-1">
                                     <input type="number" class="form-control" name="stock_limit" id="stock_limit"
-                                        placeholder="Jumlah Limit Stok (dalam pcs)" aria-label="Harga"
-                                        aria-describedby="basic-addon1"
+                                        placeholder="Obat harus dipesan ke supplier jika menyentuh angka... (dalam pcs)"
+                                        aria-label="Harga" aria-describedby="basic-addon1"
                                         value="{{ @$edit ? @$obat->stock_limit : old('stock_limit') }}">
                                     <span class="input-group-text" id="basic-addon1">pcs</span>
                                 </div>
+                                <span class="text-muted">Obat harus dipesan ke supplier jika menyentuh angka ini.</span>
                             </div>
                         </div>
                     </div>

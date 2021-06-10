@@ -14,7 +14,7 @@
                     <span>Obat</span>
                 </a>
             </li>
-            <li class="{{ request()->is('kriteria*') ? 'active' : '' }}">
+            {{-- <li class="{{ request()->is('kriteria*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('kriteria') }}">
                     <i class="fas fa-cogs"></i>
                     <span>Kriteria</span>
@@ -37,7 +37,7 @@
                     <i class="fas fa-list-ol"></i>
                     <span>Skor</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </aside>
 </div>

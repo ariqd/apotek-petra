@@ -10,11 +10,39 @@
         </a>
     </div>
 
-    <div class="section-body">
-        {{-- <h2 class="section-title">3 produk mencapai limit stok</h2> --}}
-        {{-- <p class="section-lead">This page is just an example for you to create your own page.</p> --}}
-        <div class="card">
+    <x-slot name="js">
+        <script>
+            $(document).ready(function(){
+                $(document).on('click', '#getUser', function(e){
+                    e.preventDefault();
 
+                    var url = $(this).data('url');
+
+                    $('#dynamic-content').html(''); // leave it blank before ajax call
+                    $('#modal-loader').show();      // load ajax loader
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'html'
+                    })
+                    .done(function(data){
+                        console.log(data);
+                        $('#dynamic-content').html('');
+                        $('#dynamic-content').html(data); // load response
+                        $('#modal-loader').hide();        // hide ajax loader
+                    })
+                    .fail(function(){
+                        $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
+                        $('#modal-loader').hide();
+                    });
+                });
+            });
+        </script>
+    </x-slot>
+
+    <div class="section-body">
+        <div class="card">
             <div class="table-responsive">
                 <table class="table mb-0 table-hover">
                     <thead class="thead-dark">
@@ -22,7 +50,7 @@
                             <th scope="col" class="w-auto"></th>
                             <th scope="col" class="w-auto">Nama Obat</th>
                             <th scope="col" class="w-auto">Stok Saat Ini</th>
-                            <th scope="col" class="w-auto">Limit Stok</th>
+                            <th scope="col" class="w-auto">Reorder Point</th>
                             <th scope="col" class="w-auto"></th>
                         </tr>
                     </thead>
@@ -36,13 +64,13 @@
                             <td>5</td>
                             <td>10</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary">
+                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
+                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>1])}}">
+                                    <i class="fa fa-plus"></i> Tambah Stok
+                                </button>
+                                <a href="{{ url('obat/1/edit') }}" class="btn btn-light ml-3">
                                     Edit
                                 </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
-                                </a>
-                            </td>
                             </td>
                         </tr>
                         <tr scope="row">
@@ -54,13 +82,13 @@
                             <td>5</td>
                             <td>10</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary">
+                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
+                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>2])}}">
+                                    <i class="fa fa-plus"></i> Tambah Stok
+                                </button>
+                                <a href="{{ url('obat/2/edit') }}" class="btn btn-light ml-3">
                                     Edit
                                 </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
-                                </a>
-                            </td>
                             </td>
                         </tr>
                         <tr scope="row">
@@ -72,40 +100,27 @@
                             <td>5</td>
                             <td>10</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary">
+                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
+                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>3])}}">
+                                    <i class="fa fa-plus"></i> Tambah Stok
+                                </button>
+                                <a href="{{ url('obat/3/edit') }}" class="btn btn-light ml-3">
                                     Edit
-                                </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
                                 </a>
                             </td>
                         </tr>
                     </tbody>
-                    {{-- <tfoot>
-                        <tr scope="row">
-                            <td colspan="4" class="text-end">
-                                <strong>Total:</strong>
-                            </td>
-                            <td>Rp 6.000.000</td>
-                            <td class="d-grid">
-                                <a href="" class="btn btn-primary">Checkout</a>
-                            </td>
-                        </tr>
-                    </tfoot> --}}
                 </table>
             </div>
-            {{-- <div class="card-header">
-                <h4>Example Card</h4>
-            </div>
-            <div class="card-body">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div> --}}
         </div>
     </div>
+
+    <x-slot name="modal">
+        <div class="modal fade" id="view-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div id="dynamic-content"></div>
+            </div>
+        </div>
+    </x-slot>
+
 </x-stisla-layout>

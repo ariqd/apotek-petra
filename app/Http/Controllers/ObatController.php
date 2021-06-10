@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Obat;
 use Illuminate\Http\Request;
 
-class MedicineController extends Controller
+class ObatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,6 +15,12 @@ class MedicineController extends Controller
     public function index()
     {
         return view('medicines.index');
+    }
+
+    public function loadModal($id)
+    {
+        // write your process if any
+        return view('medicines.add', compact('id'));
     }
 
     /**
@@ -54,9 +61,11 @@ class MedicineController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Obat $obat)
     {
-        //
+        return view('medicines.form', [
+            'edit' => TRUE
+        ]);
     }
 
     /**
