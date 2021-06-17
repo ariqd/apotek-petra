@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Obat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ObatController extends Controller
 {
@@ -14,13 +16,14 @@ class ObatController extends Controller
      */
     public function index()
     {
-        return view('medicines.index');
+        return view('medicines.index', [
+            'medicines' => Obat::latest()->get()
+        ]);
     }
 
-    public function loadModal($id)
+    public function loadModal(Obat $obat)
     {
-        // write your process if any
-        return view('medicines.add', compact('id'));
+        return view('medicines.add', compact('obat'));
     }
 
     /**
@@ -41,7 +44,38 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        unset($data['_token']);
+
+        // dd($request->all());
+
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $extension = $request->image->extension();
+                $request->image->storeAs('/', $data['name'] . "." . $extension);
+                $data['image'] = Storage::url($data['name'] . "." . $extension);
+            }
+        } else {
+            abort(500, 'Could not upload image :(');
+        }
+
+        Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'image' => ['required'],
+            'price' => ['required', 'numeric', 'min:100'],
+            'stock' => ['required', 'numeric'],
+            'reorder_point' => ['required', 'numeric'],
+            'type' => ['required'],
+        ])->validate();
+
+        $obat = Obat::create($data);
+
+        if ($obat) {
+            return redirect()->route('obat.index')->with('info', 'Produk baru berhasil ditambahkan');
+        }
+
+        return redirect()->route('obat.index')->with('error', 'Produk gagal ditambahkan');
     }
 
     /**
@@ -64,7 +98,8 @@ class ObatController extends Controller
     public function edit(Obat $obat)
     {
         return view('medicines.form', [
-            'edit' => TRUE
+            'edit' => TRUE,
+            'obat' => $obat
         ]);
     }
 
@@ -75,9 +110,51 @@ class ObatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Obat $obat)
     {
-        //
+        if ($request->has('add_stock')) {
+            Validator::make($request->all(), [
+                'add_stock' => 'required|numeric|min:1'
+            ])->validate();
+
+            $obat->stock = $obat->stock + $request->add_stock;
+
+            $obat->save();
+
+            return redirect()->route('obat.index')->with('info', 'Stok berhasil ditambahkan');
+        } else {
+            $data = $request->all();
+
+            unset($data['_token']);
+
+            if ($request->hasFile('image')) {
+                if ($request->file('image')->isValid()) {
+                    $extension = $request->image->extension();
+                    $request->image->storeAs('/', $data['name'] . "." . $extension);
+                    $data['image'] = Storage::url($data['name'] . "." . $extension);
+                } else {
+                    abort(500, 'Could not upload image :(');
+                }
+            }
+
+            Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'price' => ['required', 'numeric', 'min:100'],
+                // 'stock' => ['required', 'numeric'],
+                'type' => ['required'],
+                'reorder_point' => ['required'],
+            ])->validate();
+
+            if ($obat->update($data)) {
+                // Activity::create([
+                //     'message' => 'Admin "' . auth()->user()->name . '" mengubah data produk: ' . $obat->name
+                // ]);
+
+                return redirect()->route('obat.index')->with('info', 'Data produk berhasil diubah');
+            }
+
+            return redirect()->route('obat.index')->with('error', 'Data produk gagal diubah');
+        }
     }
 
     /**

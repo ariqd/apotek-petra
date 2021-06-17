@@ -9,7 +9,7 @@
                 $('#image').change(function(){
                 let reader = new FileReader();
                 reader.onload = (e) => {
-                    $('#preview-image-before-upload').attr('src', e.target.result);
+                    $('#preview-image').attr('src', e.target.result);
                 }
 
                 reader.readAsDataURL(this.files[0]);
@@ -30,8 +30,7 @@
     <div class="section-body">
         <div class="card">
             <div class="card-body">
-                <form action="{{ @$edit ? '' : route('obat.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                <form action="{{ @$edit ? route('obat.update', $obat) : route('obat.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     {{ @$edit ? method_field('PUT') : '' }}
                     <div class="row">
@@ -52,12 +51,12 @@
 
                                 <div class="col-12 mb-2">
                                     @if (@$edit)
-                                    <img id="preview-image" src="{{ asset(@$obat->image) }}" alt="preview image"
-                                        style="max-height: 250px;">
+                                    <img id="preview-image" src="{{ asset(@$obat->image) }}" alt="{{ $obat->name }}"
+                                        class="img-fluid">
                                     @else
-                                    <img id="preview-image-before-upload"
+                                    <img id="preview-image"
                                         src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
-                                        alt="preview image" style="max-height: 250px;">
+                                        alt="preview image" class="img-fluid">
                                     @endif
                                 </div>
                             </div>
@@ -67,6 +66,19 @@
                                 <label for="name">Nama Obat</label>
                                 <input type="text" class="form-control" id="name" placeholder="Nama Obat" name="name"
                                     value="{{ @$edit ? @$obat->name : old('name')}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Jenis Packaging Obat</label>
+                                <select id="type" name="type" class="form-control" id="basicSelect">
+                                    <option value="0" selected disabled>Pilih Jenis Packaging Obat</option>
+                                    <option value="Box" @if (@$obat->type == 'Box') selected @endif>
+                                        Box
+                                    </option>
+                                    <option value="Botol" @if (@$obat->type == 'Botol') selected @endif>Botol
+                                    </option>
+                                    <option value="Tube" @if (@$obat->type == 'Tube') selected @endif>Tube</option>
+                                    <option value="Pot" @if (@$obat->type == 'Pot') selected @endif>Pot</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="price">Harga</label>
@@ -90,12 +102,12 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="stock_limit">Reorder Point</label>
+                                <label for="reorder_point">Reorder Point</label>
                                 <div class="input-group mb-1">
-                                    <input type="number" class="form-control" name="stock_limit" id="stock_limit"
+                                    <input type="number" class="form-control" name="reorder_point" id="reorder_point"
                                         placeholder="Obat harus dipesan ke supplier jika menyentuh angka... (dalam pcs)"
                                         aria-label="Harga" aria-describedby="basic-addon1"
-                                        value="{{ @$edit ? @$obat->stock_limit : old('stock_limit') }}">
+                                        value="{{ @$edit ? @$obat->reorder_point : old('reorder_point') }}">
                                     <span class="input-group-text" id="basic-addon1">pcs</span>
                                 </div>
                                 <span class="text-muted">Obat harus dipesan ke supplier jika menyentuh angka ini.</span>

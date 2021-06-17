@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Stok {{ $id }}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Stok {{ $obat->name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
@@ -10,12 +10,14 @@
             <i class="fas fa-spinner fa-pulse fa-3x"></i>
         </h1>
 
-        <form action="">
+        <form action="{{ route('obat.update', $obat) }}" method="POST">
+            @csrf
+            @method('PUT')
             <div class="form-group">
                 <label for="name">Tambahan Stok</label>
                 <div class="input-group mb-3">
-                    <input type="number" class="form-control" name="stock" id="stock"
-                        placeholder="Jumlah Stok (dalam pcs)" aria-label="Harga" aria-describedby="basic-addon1">
+                    <input type="number" class="form-control" name="add_stock" id="stock"
+                        placeholder="Jumlah Tambahan Stok (dalam pcs)" aria-label="Harga" aria-describedby="basic-addon1">
                     <span class="input-group-text bg-primary text-light" id="basic-addon1">pcs</span>
                 </div>
             </div>

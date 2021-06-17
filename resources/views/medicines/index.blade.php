@@ -10,9 +10,19 @@
         </a>
     </div>
 
+    <x-slot name="css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    </x-slot>
+
     <x-slot name="js">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $(document).ready(function(){
+                $('#myTable').DataTable();
+
                 $(document).on('click', '#getUser', function(e){
                     e.preventDefault();
 
@@ -42,9 +52,9 @@
     </x-slot>
 
     <div class="section-body">
-        <div class="card">
+        <div class="card card-body">
             <div class="table-responsive">
-                <table class="table mb-0 table-hover">
+                <table class="table mb-0 table-hover " id="myTable">
                     <thead class="thead-dark">
                         <tr scope="row">
                             <th scope="col" class="w-auto"></th>
@@ -55,60 +65,31 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($medicines as $obat)
                         <tr scope="row">
                             <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
+                                <img src="{{ asset($obat->image) }}" class="w-50 mx-auto d-block"
+                                    alt="{{ $obat->name }}">
                             </td>
-                            <td class="font-weight-bold">Stimuno</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-center">
+                            <td class="align-middle">
+                                <div class="font-weight-bold">{{ $obat->name }}</div>
+                                <div>Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
+                            </td>
+                            {{-- <td class="align-middle">{{ $obat->stock }} {{ $obat->type == 'Box' ? 'pcs' : $obat->type }} / box</td> --}}
+                            <td class="align-middle">{{ $obat->stock }} {{ $obat->type }}</td>
+                            <td class="align-middle">{{ $obat->reorder_point }} {{ $obat->type }}</td>
+                            <td class="text-center align-middle">
                                 <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>1])}}">
+                                    class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
                                     <i class="fa fa-plus"></i> Tambah Stok
                                 </button>
-                                <a href="{{ url('obat/1/edit') }}" class="btn btn-light ml-3">
+                                <a href="{{ route('obat.edit', $obat) }}" class="btn btn-light ml-3">
                                     Edit
                                 </a>
                             </td>
                         </tr>
-                        <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
-                            </td>
-                            <td class="font-weight-bold">CDR Vitamin C</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-center">
-                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>2])}}">
-                                    <i class="fa fa-plus"></i> Tambah Stok
-                                </button>
-                                <a href="{{ url('obat/2/edit') }}" class="btn btn-light ml-3">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                    class="w-50 mx-auto d-block" alt="singleminded">
-                            </td>
-                            <td class="font-weight-bold">Mylanta</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="text-center">
-                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                    class="btn btn-primary" data-url="{{ route('dynamicModal',['id'=>3])}}">
-                                    <i class="fa fa-plus"></i> Tambah Stok
-                                </button>
-                                <a href="{{ url('obat/3/edit') }}" class="btn btn-light ml-3">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

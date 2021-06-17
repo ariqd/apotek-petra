@@ -1,13 +1,10 @@
 <x-stisla-layout>
     <x-slot name="title">
-        Supplier
+        Transaksi
     </x-slot>
 
     <div class="section-header">
-        <h1>Supplier</h1>
-        <a href="#" class="btn btn-primary btn-sm ml-3">
-            <i class="fas fa-plus"></i> Tambah Supplier
-        </a>
+        <h1>Transaksi</h1>
     </div>
 
     <div class="section-body">
@@ -18,7 +15,7 @@
                     <thead class="thead-dark ">
                         <tr scope="row">
                             <th scope="col" class="w-auto"></th>
-                            <th scope="col" class="w-auto">Nama Supplier</th>
+                            <th scope="col" class="w-auto">Nama Transaksi</th>
                             <th scope="col" class="w-auto">Alamat</th>
                             <th scope="col" class="w-auto">No. Telp</th>
                             <th scope="col" class="w-auto">Kota</th>

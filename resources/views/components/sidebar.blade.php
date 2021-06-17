@@ -8,6 +8,12 @@
                     <span>Home</span>
                 </a>
             </li>
+            <li class="{{ request()->is('/dashboard*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
             <li class="{{ request()->is('obat*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('obat') }}">
                     <i class="fas fa-vial"></i>
@@ -19,25 +25,25 @@
                     <i class="fas fa-cogs"></i>
                     <span>Kriteria</span>
                 </a>
-            </li>
-            <li class="{{ request()->is('supplier*') ? 'active' : '' }}">
+            </li> --}}
+            {{-- <li class="{{ request()->is('supplier*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('supplier') }}">
                     <i class="fas fa-users"></i>
                     <span>Supplier</span>
                 </a>
-            </li>
-            <li class="{{ request()->is('perhitungan*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('perhitungan') }}">
-                    <i class="fas fa-calculator"></i>
-                    <span>Perhitungan</span>
-                </a>
-            </li>
-            <li class="{{ request()->is('skor*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('skor') }}">
-                    <i class="fas fa-list-ol"></i>
-                    <span>Skor</span>
-                </a>
             </li> --}}
+            <li class="{{ request()->is('transaksi/create*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('transaksi/create') }}">
+                    <i class="fas fa-calculator"></i>
+                    <span>Transaksi Baru</span>
+                </a>
+            </li>
+            <li class="{{ request()->is('transaksi') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('transaksi') }}">
+                    <i class="fas fa-list-ol"></i>
+                    <span>Riwayat Transaksi</span>
+                </a>
+            </li>
         </ul>
     </aside>
 </div>
