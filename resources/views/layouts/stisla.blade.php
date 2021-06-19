@@ -60,6 +60,7 @@
     <!-- JS Libraies -->
     {{-- <script src="{{ asset('assets/modules/sticky-kit.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/modules/prism/prism.js') }}"></script> --}}
+    <script src="{{ asset('assets/modules/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('assets/js/page/bootstrap-modal.js') }}"></script>
 
     <!-- Page Specific JS File -->

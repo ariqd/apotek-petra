@@ -16,14 +16,14 @@
 
     <x-slot name="js">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $('#myTable').DataTable();
 
-                $(document).on('click', '#getUser', function(e){
+                $(document).on('click', '#getUser', function (e) {
                     e.preventDefault();
 
                     var url = $(this).data('url');
@@ -36,16 +36,16 @@
                         type: 'GET',
                         dataType: 'html'
                     })
-                    .done(function(data){
-                        console.log(data);
-                        $('#dynamic-content').html('');
-                        $('#dynamic-content').html(data); // load response
-                        $('#modal-loader').hide();        // hide ajax loader
-                    })
-                    .fail(function(){
-                        $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
-                        $('#modal-loader').hide();
-                    });
+                        .done(function (data) {
+                            console.log(data);
+                            $('#dynamic-content').html('');
+                            $('#dynamic-content').html(data); // load response
+                            $('#modal-loader').hide();        // hide ajax loader
+                        })
+                        .fail(function () {
+                            $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
+                            $('#modal-loader').hide();
+                        });
                 });
             });
         </script>
@@ -56,20 +56,21 @@
             <div class="table-responsive">
                 <table class="table mb-0 table-hover " id="myTable">
                     <thead class="thead-dark">
-                        <tr scope="row">
-                            <th scope="col" class="w-auto"></th>
-                            <th scope="col" class="w-auto">Nama Obat</th>
-                            <th scope="col" class="w-auto">Stok Saat Ini</th>
-                            <th scope="col" class="w-auto">Reorder Point</th>
-                            <th scope="col" class="w-auto"></th>
-                        </tr>
+                    <tr scope="row">
+                        <th scope="col" class="w-auto"></th>
+                        <th scope="col" class="w-auto">Nama Obat</th>
+                        <th scope="col" class="w-auto">Stok Saat Ini</th>
+                        <th scope="col" class="w-auto">Reorder Point</th>
+                        <th scope="col" class="w-auto"></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach ($medicines as $obat)
-                        <tr scope="row">
-                            <td class="w-25 p-2">
-                                <img src="{{ asset($obat->image) }}" class="w-50 mx-auto d-block"
-                                    alt="{{ $obat->name }}">
+                    @foreach ($medicines as $obat)
+                        <tr scope="row"
+                            style="background-color: {{ $obat->stock <= $obat->reorder_point ? '#ffebee' : '' }}">
+                            <td class="w-25">
+                                <img src="{{ asset($obat->image) }}" class="w-25 mx-auto d-block"
+                                     alt="{{ $obat->name }}">
                             </td>
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $obat->name }}</div>
@@ -80,7 +81,7 @@
                             <td class="align-middle">{{ $obat->reorder_point }} {{ $obat->type }}</td>
                             <td class="text-center align-middle">
                                 <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                    class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
+                                        class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
                                     <i class="fa fa-plus"></i> Tambah Stok
                                 </button>
                                 <a href="{{ route('obat.edit', $obat) }}" class="btn btn-light ml-3">
@@ -88,7 +89,7 @@
                                 </a>
                             </td>
                         </tr>
-                        @endforeach
+                    @endforeach
 
                     </tbody>
                 </table>

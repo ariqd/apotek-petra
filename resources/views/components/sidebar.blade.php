@@ -8,7 +8,7 @@
                     <span>Home</span>
                 </a>
             </li>
-            <li class="{{ request()->is('/dashboard*') ? 'active' : '' }}">
+            <li class="{{ request()->is('dashboard*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/dashboard') }}">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -42,6 +42,12 @@
                 <a class="nav-link" href="{{ url('transaksi') }}">
                     <i class="fas fa-list-ol"></i>
                     <span>Riwayat Transaksi</span>
+                </a>
+            </li>
+            <li class="{{ request()->is('supplier') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('supplier') }}">
+                    <i class="fas fa-users"></i>
+                    <span>Supplier</span>
                 </a>
             </li>
         </ul>

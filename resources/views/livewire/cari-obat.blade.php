@@ -15,24 +15,43 @@
         <div class="table-responsive">
             <table class="table mb-0 table-hover">
                 <tbody>
-                    @forelse($obats as $obat)
+                @forelse($obats as $obat)
                     <tr scope="row">
                         <td class="w-25 p-2">
-                            <img src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                                class="w-50 mx-auto d-block" alt="singleminded">
+                            <img
+                                src="{{ asset($obat->image) }}"
+                                class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
                         </td>
                         <td class="align-middle">
                             <div class="font-weight-bold">{{ $obat->name }}</div>
                             <div>Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
                         </td>
-                        <td class="align-middle">{{ $obat->stock }} {{ $obat->type }}</td>
+                        <td class="align-middle">
+                            <div class="font-weight-bold">Stok: {{ $obat->stock }} {{ $obat->type }}</div>
+                            <div>Reorder Point: {{ $obat->reorder_point }} {{ $obat->type }}</div>
+                        </td>
                         <td class="text-center">
-                            <button class="btn btn-primary" wire:click="cartButton({{ $obat->id }})">
-                                <i class="fa fa-plus"></i> Keranjang
-                            </button>
+                            @if($obat->stock <= 0)
+                                <div class="text-danger">
+                                    <small>
+                                        Stok habis
+                                    </small>
+                                </div>
+                            @else
+                                <button class="btn btn-primary" wire:click="cartButton({{ $obat->id }})">
+                                    <i class="fa fa-plus"></i> Keranjang
+                                </button>
+                                @if($obat->stock < $obat->reorder_point)
+                                    <div class="text-danger mt-2">
+                                        <small>
+                                            Stok dibawah Reorder Point
+                                        </small>
+                                    </div>
+                                @endif
+                            @endif
                         </td>
                     </tr>
-                    @empty
+                @empty
                     <tr>
                         <td colspan="4">
                             <div class="text-muted text-center">
@@ -40,7 +59,7 @@
                             </div>
                         </td>
                     </tr>
-                    @endforelse
+                @endforelse
                 </tbody>
             </table>
         </div>

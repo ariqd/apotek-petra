@@ -3,22 +3,30 @@
         Transaksi Baru
     </x-slot>
 
-    {{-- <x-slot name="js">
+    <x-slot name="js">
         <script>
             $(document).ready(function (e) {
-                $('#image').change(function(){
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    $('#preview-image-before-upload').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(this.files[0]);
-
-                });
+                Livewire.on('checkoutButtonClicked', () => {
+                    swal({
+                        title: "Checkout pesanan ini?",
+                        text: "Stok akan otomatis dikurangi berdasarkan jumlah pesanan",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                // swal("Poof! Your imaginary file has been deleted!", {
+                                //     icon: "success",
+                                // });
+                                Livewire.emit('checkout')
+                            }
+                        });
+                })
             });
 
         </script>
-    </x-slot> --}}
+    </x-slot>
 
     <div class="section-header">
         <h1> Transaksi Baru</h1>
@@ -26,10 +34,10 @@
 
     <div class="row">
         <div class="col-md-8">
-            <livewire:cari-obat />
+            <livewire:cari-obat/>
         </div>
         <div class="col-md-4">
-            <livewire:transaksi />
+            <livewire:transaksi/>
         </div>
     </div>
 

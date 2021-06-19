@@ -7,75 +7,49 @@
         <h1>Transaksi</h1>
     </div>
 
-    <div class="section-body">
-        <div class="card">
+    <x-slot name="css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    </x-slot>
 
+    <x-slot name="js">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script>
+    </x-slot>
+
+    <div class="section-body">
+        <div class="card card-body">
             <div class="table-responsive">
-                <table class="table mb-0 table-hover">
-                    <thead class="thead-dark ">
-                        <tr scope="row">
-                            <th scope="col" class="w-auto"></th>
-                            <th scope="col" class="w-auto">Nama Transaksi</th>
-                            <th scope="col" class="w-auto">Alamat</th>
-                            <th scope="col" class="w-auto">No. Telp</th>
-                            <th scope="col" class="w-auto">Kota</th>
-                            <th scope="col" class="w-auto">Jenis Obat</th>
-                            <th scope="col" class="w-auto"></th>
-                        </tr>
+                <table class="table mb-0 table-hover" id="myTable">
+                    <thead class="thead-dark">
+                    <tr scope="row">
+                        <th scope="col" class="w-auto">Tanggal</th>
+                        <th scope="col" class="w-auto">Nama Pembeli</th>
+                        <th scope="col" class="w-auto">Jumlah Obat</th>
+                        <th scope="col" class="w-auto">Total</th>
+                        <th scope="col" class="w-auto"></th>
+                    </tr>
                     </thead>
                     <tbody>
+                    @foreach($transactions as $transaction)
                         <tr scope="row">
-                            <td>
-                                1
-                            </td>
-                            <td class="font-weight-bold">PT Bina San Prima</td>
-                            <td>Jl. ABC</td>
-                            <td>082117227288</td>
-                            <td>Kota Bandung</td>
-                            <td>Antibiotik</td>
+                            <td>{{ $transaction->created_at->translatedFormat('l, jS F Y g:i') }}</td>
+                            <td class="font-weight-bold">{{ $transaction->nama_pembeli }}</td>
+                            <td>{{ $transaction->count }}</td>
+                            <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary">
-                                    Edit
-                                </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
-                                </a>
-                            </td>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <td>2</td>
-                            <td class="font-weight-bold">PT Unoson</td>
-                            <td>Jl. DEF</td>
-                            <td>082117227288</td>
-                            <td>Kota Surabaya</td>
-                            <td>Batuk</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary">
-                                    Edit
-                                </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
-                                </a>
-                            </td>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <td>3</td>
-                            <td class="font-weight-bold">PT Suramando</td>
-                            <td>Jl. GHI</td>
-                            <td>082117227288</td>
-                            <td>Kota Jakarta</td>
-                            <td>Diare</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary">
-                                    Edit
-                                </a>
-                                <a href="#" class="btn btn-light ml-3">
-                                    Delete
+                                <a href="{{ route('transaksi.show', $transaction->id) }}" class="btn btn-primary">
+                                    Detail Transaksi
                                 </a>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
