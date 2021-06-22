@@ -29,7 +29,7 @@
                     var url = $(this).data('url');
 
                     $('#dynamic-content').html(''); // leave it blank before ajax call
-                    $('#modal-loader').show();      // load ajax loader
+                    $('#loading').show();      // load ajax loader
 
                     $.ajax({
                         url: url,
@@ -40,11 +40,11 @@
                             console.log(data);
                             $('#dynamic-content').html('');
                             $('#dynamic-content').html(data); // load response
-                            $('#modal-loader').hide();        // hide ajax loader
+                            $('#loading').hide();        // hide ajax loader
                         })
                         .fail(function () {
                             $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
-                            $('#modal-loader').hide();
+                            $('#loading').hide();
                         });
                 });
             });
@@ -59,6 +59,7 @@
                     <tr scope="row">
                         <th scope="col" class="w-auto"></th>
                         <th scope="col" class="w-auto">Nama Obat</th>
+                        <th scope="col" class="w-auto">Jenis</th>
                         <th scope="col" class="w-auto">Stok Saat Ini</th>
                         <th scope="col" class="w-auto">Reorder Point</th>
                         <th scope="col" class="w-auto"></th>
@@ -76,9 +77,9 @@
                                 <div class="font-weight-bold">{{ $obat->name }}</div>
                                 <div>Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
                             </td>
-                            {{-- <td class="align-middle">{{ $obat->stock }} {{ $obat->type == 'Box' ? 'pcs' : $obat->type }} / box</td> --}}
-                            <td class="align-middle">{{ $obat->stock }} {{ $obat->type }}</td>
-                            <td class="align-middle">{{ $obat->reorder_point }} {{ $obat->type }}</td>
+                            <td class="align-middle">{{ $obat->type }}</td>
+                            <td class="align-middle">{{ $obat->stock }} pcs</td>
+                            <td class="align-middle">{{ $obat->reorder_point }} pcs</td>
                             <td class="text-center align-middle">
                                 <button data-toggle="modal" data-target="#view-modal" id="getUser"
                                         class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">

@@ -2,45 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('supplier.index');
+        return view('supplier.index', [
+            'suppliers' => Supplier::all()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('supplier.form', [
+            'edit' => false
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string',
+            'kota' => 'required|string',
+            'alamat' => 'required|string',
+            'jenis_obat' => 'required|string',
+            'no_telp' => 'required|string',
+        ]);
+
+        Supplier::create($request->all());
+
+        return redirect()->route('supplier.index')->with('info', 'Supplier baru berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -50,31 +60,37 @@ class SupplierController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Supplier $supplier)
     {
-        //
+        return view('supplier.form', [
+            'edit' => true,
+            'supplier' => $supplier
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Supplier $supplier)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string',
+            'kota' => 'required|string',
+            'alamat' => 'required|string',
+            'jenis_obat' => 'required|string',
+            'no_telp' => 'required|string',
+        ]);
+
+        $supplier->update($request->all());
+
+        return redirect()->route('supplier.index')->with('info', 'Supplier baru berhasil ditambahkan');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
