@@ -62,9 +62,9 @@
                         <th scope="col" class="w-auto"></th>
                         <th scope="col" class="w-auto">Nama Supplier</th>
                         <th scope="col" class="w-auto">Alamat</th>
-                        <th scope="col" class="w-auto">No. Telp</th>
                         <th scope="col" class="w-auto">Kota</th>
-                        <th scope="col" class="w-auto">Jenis Obat</th>
+                        <th scope="col" class="w-auto">No. Telp</th>
+{{--                        <th scope="col" class="w-auto">Jenis Obat</th>--}}
                         <th scope="col" class="w-auto"></th>
                     </tr>
                     </thead>
@@ -76,7 +76,7 @@
                             <td>{{ $supplier->alamat }}</td>
                             <td>{{ $supplier->kota }}</td>
                             <td>{{ $supplier->no_telp }}</td>
-                            <td>{{ $supplier->jenis_obat }}</td>
+{{--                            <td>{{ $supplier->jenis_obat }}</td>--}}
                             <td class="text-center">
                                 <button data-toggle="modal" data-target="#view-modal"
                                         data-url="{{ route('supplier.edit', $supplier) }}"

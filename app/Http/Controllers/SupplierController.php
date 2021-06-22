@@ -38,7 +38,6 @@ class SupplierController extends Controller
             'nama' => 'required|string',
             'kota' => 'required|string',
             'alamat' => 'required|string',
-            'jenis_obat' => 'required|string',
             'no_telp' => 'required|string',
         ]);
 
@@ -78,7 +77,6 @@ class SupplierController extends Controller
             'nama' => 'required|string',
             'kota' => 'required|string',
             'alamat' => 'required|string',
-            'jenis_obat' => 'required|string',
             'no_telp' => 'required|string',
         ]);
 

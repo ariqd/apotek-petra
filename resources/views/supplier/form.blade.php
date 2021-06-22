@@ -33,11 +33,11 @@
                 <input type="text" class="form-control" name="kota" id="kota"
                        value="{{ $edit ? $supplier->kota : old('kota') }}" placeholder="Kota">
             </div>
-            <div class="form-group">
-                <label for="jenis_obat">Jenis Obat</label>
-                <input type="text" class="form-control" name="jenis_obat" id="jenis_obat"
-                       value="{{ $edit ? $supplier->jenis_obat : old('jenis_obat') }}" placeholder="Jenis Obat">
-            </div>
+{{--            <div class="form-group">--}}
+{{--                <label for="jenis_obat">Jenis Obat</label>--}}
+{{--                <input type="text" class="form-control" name="jenis_obat" id="jenis_obat"--}}
+{{--                       value="{{ $edit ? $supplier->jenis_obat : old('jenis_obat') }}" placeholder="Jenis Obat">--}}
+{{--            </div>--}}
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
