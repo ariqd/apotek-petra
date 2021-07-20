@@ -59,8 +59,11 @@
                     <tr scope="row">
                         <th scope="col" class="w-auto"></th>
                         <th scope="col" class="w-auto">Nama Obat</th>
+                        <th scope="col" class="w-auto">Kategori</th>
+                        <th scope="col" class="w-auto">Harga Jual</th>
                         <th scope="col" class="w-auto">Jenis</th>
                         <th scope="col" class="w-auto">Stok Saat Ini</th>
+                        <th scope="col" class="w-auto">Rak</th>
                         <th scope="col" class="w-auto">Reorder Point</th>
                         <th scope="col" class="w-auto"></th>
                     </tr>
@@ -75,10 +78,13 @@
                             </td>
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $obat->name }}</div>
-                                <div>Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
+                                <div>Rp {{ number_format($obat->harga_beli, 0, ',', '.') }}</div>
                             </td>
+                            <td class="align-middle">{{ $obat->kategori }}</td>
+                            <td class="align-middle">{{ $obat->harga_jual }}</td>
                             <td class="align-middle">{{ $obat->type }}</td>
                             <td class="align-middle">{{ $obat->stock }} pcs</td>
+                            <td class="align-middle">{{ $obat->Rak }}</td>
                             <td class="align-middle">{{ $obat->reorder_point }} pcs</td>
                             <td class="text-center align-middle">
                                 <button data-toggle="modal" data-target="#view-modal" id="getUser"
