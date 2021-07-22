@@ -9,15 +9,24 @@ use Illuminate\Support\Facades\Validator;
 
 class ObatController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('pemilik')->except('index');
+    }
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        $obat = Obat::query();
+
+        if (request()->get('kategori') && request()->get('kategori') != 'all') {
+            $obat->where('kategori', 'like', request()->get('kategori'));
+        }
+
         return view('medicines.index', [
-            'medicines' => Obat::latest()->get()
+            'medicines' => $obat->orderBy('name')->get()
         ]);
     }
 
@@ -28,8 +37,6 @@ class ObatController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -39,7 +46,7 @@ class ObatController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      */
     public function store(Request $request)
     {
@@ -80,7 +87,7 @@ class ObatController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -91,7 +98,7 @@ class ObatController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Obat $obat)
@@ -105,8 +112,8 @@ class ObatController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Obat $obat)
@@ -159,7 +166,7 @@ class ObatController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

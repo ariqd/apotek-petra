@@ -34,6 +34,7 @@ class Transaksi extends Component
             1,
             [
                 'max' => $obat->stock,
+                'image' => $obat->image
             ]
         );
     }

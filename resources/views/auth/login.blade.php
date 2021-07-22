@@ -47,9 +47,9 @@
 
         </div>
     </div>
-    <div class="mt-5 text-muted text-center">
-        Don't have an account? <a href="{{ url('register') }}">Register</a>
-    </div>
+{{--    <div class="mt-5 text-muted text-center">--}}
+{{--        Don't have an account? <a href="{{ url('register') }}">Register</a>--}}
+{{--    </div>--}}
     <div class="simple-footer">
         Copyright &copy; Apotek Petra 2021
     </div>

@@ -1,7 +1,6 @@
 <?php
 
-// use App\Http\Controllers\CalculateController;
-// use App\Http\Controllers\CriteriaController;
+ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\SupplierController;
@@ -19,17 +18,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('transaksi', TransaksiController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('dashboard', DashboardController::class);
-
-    // Route::get('obat', [ObatController::class, 'index'])->name('obat.index');
-    // Route::get('obat/create', [ObatController::class, 'create'])->name('obat.create');
-    // Route::get('obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
-
-    // Route::prefix('setting')->name('setting.')->group(function () {
-    //     Route::get('/', [SettingController::class, 'index'])->name('index');
-    // });
-
-    // Route::get('dynamicModal/{id}', [
-    //     'as' => 'dynamicModal',
-    //     'uses' => 'ObatController@loadModal'
-    // ]);
+    Route::resource('users', UserController::class);
 });

@@ -14,8 +14,8 @@
                 <div class="row mb-4">
                     <div class="col-3 text-right">
                         <img
-                            src="https://cms.sehatq.com/cdn-cgi/image/f=auto,width=589,fit=pad,background=white,quality=100/public/img/drugbrand_img/stimuno-sirup-60-ml-01-1571106213.jpg"
-                            class="img-fluid" alt="preview">
+                            src="{{ asset($obat->options->image) }}"
+                            class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
                     </div>
                     <div class="col-6">
                         <div class="mb-1 font-weight-bold">{{ $obat->name }}</div>

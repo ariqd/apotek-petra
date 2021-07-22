@@ -59,6 +59,19 @@
                 </div>
 
                 <div class="form-group">
+                    <div class="d-block">
+                        <label for="password" class="control-label">Role</label>
+                    </div>
+                    <select name="role" id="role" class="form-control">
+                        <option value="Kasir">Kasir</option>
+                        <option value="Pemilik">Pemilik</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        please fill in your password
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                         Daftar
                     </button>
