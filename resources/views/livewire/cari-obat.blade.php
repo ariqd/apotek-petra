@@ -7,7 +7,9 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="search">Ketik nama obat</label>
-                <input type="text" class="form-control" placeholder="Ketik nama obat" wire:model="search" id="search">
+                <input type="text" class="form-control" placeholder="Ketik nama obat"
+                       wire:change.lazy="$emit('showLoading')"
+                       id="search" wire:model="search">
                 <small class="text-muted">Minimal 3 karakter</small>
             </div>
         </div>
@@ -30,6 +32,10 @@
                             <div class="font-weight-bold">Stok: {{ $obat->stock }} {{ $obat->type }}</div>
                             <div>Reorder Point: {{ $obat->reorder_point }} {{ $obat->type }}</div>
                         </td>
+                        {{--                        <td class="align-middle">--}}
+                        {{--                            <div class="font-weight-bold">Expired Date</div>--}}
+                        {{--                            <div>{{ $obat->Expired }}</div>--}}
+                        {{--                        </td>--}}
                         <td class="text-center">
                             @if($obat->stock <= 0)
                                 <div class="text-danger">
@@ -38,9 +44,17 @@
                                     </small>
                                 </div>
                             @else
-                                <button class="btn btn-primary" wire:click="cartButton({{ $obat->id }})">
-                                    <i class="fa fa-plus"></i> Keranjang
-                                </button>
+                                <div wire:loading.remove>
+                                    <button class="btn btn-primary"
+                                            wire:click="$emit('addToCartButtonClick', {{ $obat->id }})"
+                                    >
+                                        <i class="fa fa-plus"></i>
+                                        Keranjang
+                                    </button>
+                                </div>
+                                <div wire:loading>
+                                    Loading...
+                                </div>
                                 @if($obat->stock < $obat->reorder_point)
                                     <div class="text-danger mt-2">
                                         <small>

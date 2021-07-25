@@ -9,23 +9,32 @@ class CariObat extends Component
 {
     public $search;
     public $obats = [];
+    public $isTransaksi;
+
+    protected $listeners = ['cartButton', 'updatedSearch'];
 
     public function render()
     {
         return view('livewire.cari-obat');
     }
 
-    public function updatedSearch($value)
+    public function updatedSearch()
     {
-        if (empty($value)) {
+        if (empty($this->search)) {
             $this->reset('obats');
         } else {
-            $this->obats = Obat::where('name', 'like', $value . '%')->get();
+            $this->obats = Obat::where('name', 'like', $this->search . '%')->get();
         }
+
+        $this->emit('hideLoading');
     }
 
     public function cartButton($id)
     {
-        $this->emit('addToCart', $id);
+        if ($this->isTransaksi) {
+            $this->emit('addToCart', $id);
+        } else {
+            $this->emit('addToRestock', $id);
+        }
     }
 }

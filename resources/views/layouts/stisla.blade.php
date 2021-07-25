@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
     {{ @$css }}
+    {{ @$livewireCss }}
 
     <style>
         .loading {
@@ -38,11 +39,11 @@
 </head>
 
 <body class="layout-2">
-<div class="loading" id="loading" style="font-size: 20px">
-    <i class="fas fa-sync fa-spin fa-2x fa-fw"></i><br/>
-    <span>Loading</span>
-</div>
 <div id="app">
+    <div class="loading" id="loading" style="font-size: 20px">
+        <i class="fas fa-sync fa-spin fa-2x fa-fw"></i><br/>
+        <span>Loading</span>
+    </div>
     <div class="main-wrapper">
     @include('components.navbar')
 
@@ -84,15 +85,9 @@
 {{-- <script src="{{ asset('assets/modules/prism/prism.js') }}"></script> --}}
 <script src="{{ asset('assets/modules/sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{ asset('assets/js/page/bootstrap-modal.js') }}"></script>
-
-<!-- Page Specific JS File -->
-{{ @$js }}
-
-<!-- Template JS File -->
-{{-- <script src="{{ asset('assets/js/scripts.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script> --}}
-
 @livewireScripts
+{{ @$js }}
+{{ @$livewireJs }}
 </body>
 
 </html>

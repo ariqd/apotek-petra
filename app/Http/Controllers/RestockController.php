@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class RestockController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('transaksi.index', [
-            'transactions' => Transaction::latest()->get()
+        return view('restock.index', [
+//            'transactions' => Restock::latest()->get()
         ]);
     }
 
@@ -23,8 +22,8 @@ class TransaksiController extends Controller
     public function create()
     {
         return view('transaksi.form', [
-            'isTransaksi' => TRUE,
-            'title' => 'Transaksi Baru'
+            'isTransaksi' => FALSE,
+            'title' => 'Restock'
         ]);
     }
 
@@ -33,8 +32,8 @@ class TransaksiController extends Controller
      */
     public function show($id)
     {
-        return view('transaksi.show', [
-            'transaction' => Transaction::find($id)
+        return view('restock.show', [
+            'transaction' => Restock::find($id)
         ]);
     }
 }

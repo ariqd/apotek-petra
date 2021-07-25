@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\RestockController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('obat', ObatController::class);
     Route::resource('transaksi', TransaksiController::class);
+    Route::resource('restock', RestockController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('dashboard', DashboardController::class);
     Route::resource('users', UserController::class);

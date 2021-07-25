@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header justify-content-between">
             <h4>Keranjang belanja</h4>
-            <a href="" class="text-danger" wire:click.prevent="clearCart">Delete all</a>
+            <a href="" class="text-danger" wire:click.prevent="clearCart">Remove all</a>
         </div>
         <div class="card-body">
             @forelse(Cart::content() as $obat)
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <button class="btn btn-primary btn-block"
-                    {{ $error_count ? 'disabled' : '' }} wire:click.prevent="$emit('checkoutButtonClicked')">
+                    {{ $error_count > 0 || Cart::count() <= 0 ? 'disabled' : '' }} wire:click.prevent="$emit('checkoutButtonClicked')">
                 <i class="fa fa-check"></i> Checkout
             </button>
         </div>

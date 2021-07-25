@@ -1,6 +1,6 @@
 <x-stisla-layout>
     <x-slot name="title">
-        {{ $title }}
+        Pesan ke Supplier
     </x-slot>
 
     <x-slot name="js">
@@ -11,8 +11,8 @@
                 })
 
                 Livewire.on('searching', () => {
-                    // $('#loading').show();
-                    // Livewire.emit('updatedSearch')
+                    $('#loading').show();
+                    Livewire.emit('updatedSearch')
                 })
 
                 Livewire.on('addToCartButtonClick', $id => {
@@ -37,28 +37,12 @@
                             }
                         });
                 })
-
-                Livewire.on('restockButtonClicked', () => {
-                    swal({
-                        title: "Ajukan pemesanan ke Supplier ini?",
-                        text: "Stok akan otomatis ditambah berdasarkan jumlah pesanan",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                Livewire.emit('doRestock')
-                            }
-                        });
-                })
             });
-
         </script>
     </x-slot>
 
     <div class="section-header">
-        <h1>{{ $title }}</h1>
+        <h1>Pesan ke Supplier</h1>
     </div>
 
     <div class="row">
@@ -66,11 +50,7 @@
             <livewire:cari-obat :isTransaksi="$isTransaksi"/>
         </div>
         <div class="col-md-4">
-            @if($isTransaksi)
-                <livewire:transaksi/>
-            @else
-                <livewire:restock/>
-            @endif
+            <livewire:restock/>
         </div>
     </div>
 
