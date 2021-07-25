@@ -20,6 +20,7 @@
                 $('.selectric').selectric();
 
                 $('#kategori').on('change', function () {
+                    $('#loading').show();
                     document.forms['kategori'].submit();
                 });
 
