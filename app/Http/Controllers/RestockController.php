@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Restock;
 use Illuminate\Http\Request;
 
 class RestockController extends Controller
@@ -12,7 +13,7 @@ class RestockController extends Controller
     public function index()
     {
         return view('restock.index', [
-//            'transactions' => Restock::latest()->get()
+            'restocks' => Restock::latest()->get()
         ]);
     }
 
@@ -33,7 +34,7 @@ class RestockController extends Controller
     public function show($id)
     {
         return view('restock.show', [
-            'transaction' => Restock::find($id)
+            'restock' => Restock::find($id)
         ]);
     }
 }

@@ -1,10 +1,10 @@
 <x-stisla-layout>
     <x-slot name="title">
-        Detail Transaksi {{ $transaction->nama_pembeli }} pada hari {{ $transaction->created_at->translatedFormat('l, jS F Y g:i') }}
+        Detail Pesanan ke {{ $restock->supplier->nama }} pada hari {{ $restock->created_at->translatedFormat('l, jS F Y g:i') }}
     </x-slot>
 
     <div class="section-header">
-        <h1>Detail Transaksi {{ $transaction->nama_pembeli }} pada hari {{ $transaction->created_at->translatedFormat('l, jS F Y g:i') }}</h1>
+        <h1>Detail Pesanan ke {{ $restock->supplier->nama }} pada hari {{ $restock->created_at->translatedFormat('l, jS F Y g:i') }}</h1>
     </div>
 
     <x-slot name="css">
@@ -31,12 +31,13 @@
                     <tr scope="row">
                         <th scope="col" class="w-auto"></th>
                         <th scope="col" class="w-auto">Nama Obat</th>
+                        <th scope="col" class="w-auto">Tanggal Kadaluarsa</th>
                         <th scope="col" class="w-auto">Qty</th>
                         <th scope="col" class="w-auto">Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($transaction->items as $item)
+                    @foreach ($restock->items as $item)
                         <tr scope="row">
                             <td class="w-25 p-2">
                                 <img src="{{ asset($item->image) }}" class="w-25 mx-auto d-block"
@@ -44,10 +45,11 @@
                             </td>
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $item->name }}</div>
-                                <div>Rp {{ number_format($item->obat->price, 0, ',', '.') }}</div>
+                                <div>Harga beli: Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</div>
                             </td>
+                            <td class="align-middle">{{ $item->expiry_date }}</td>
                             <td class="align-middle">{{ $item->qty }} {{ $item->obat->type }}</td>
-                            <td class="align-middle">Rp {{ number_format($item->price * $item->qty, 0, ',', '.') }}</td>
+                            <td class="align-middle">Rp {{ number_format($item->harga_beli * $item->qty, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -57,7 +59,7 @@
                             <div class="text-right">Total</div>
                         </td>
                         <td class="font-weight-bold">
-                            Rp {{ number_format($transaction->total, 0, ',', '.') }}
+                            Rp {{ number_format($restock->total, 0, ',', '.') }}
                         </td>
                     </tr>
                     </tfoot>

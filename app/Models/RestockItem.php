@@ -10,4 +10,14 @@ class RestockItem extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function restock()
+    {
+        return $this->belongsTo(Restock::class);
+    }
+
+    public function obat()
+    {
+        return $this->belongsTo(Obat::class);
+    }
 }

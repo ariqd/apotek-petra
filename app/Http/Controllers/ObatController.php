@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Obat;
+use App\Models\RestockItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -86,13 +87,12 @@ class ObatController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return view('medicines.show', [
+            'details' => RestockItem::where('obat_id', $id)->latest()->get()
+        ]);
     }
 
     /**

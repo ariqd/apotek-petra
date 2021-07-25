@@ -20,9 +20,15 @@
                 @forelse($obats as $obat)
                     <tr scope="row">
                         <td class="w-25 p-2">
-                            <img
-                                src="{{ asset($obat->image) }}"
-                                class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
+                            @if(file_exists(asset($obat->image)))
+                                <img
+                                    src="{{ asset($obat->image) }}"
+                                    class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
+                            @else
+                                <img
+                                    src="https://via.placeholder.com/50?text=No+image"
+                                    class="img-fluid mx-auto d-block" alt="{{ $obat->name }}">
+                            @endif
                         </td>
                         <td class="align-middle">
                             <div class="font-weight-bold">{{ $obat->name }}</div>
@@ -32,10 +38,6 @@
                             <div class="font-weight-bold">Stok: {{ $obat->stock }} {{ $obat->type }}</div>
                             <div>Reorder Point: {{ $obat->reorder_point }} {{ $obat->type }}</div>
                         </td>
-                        {{--                        <td class="align-middle">--}}
-                        {{--                            <div class="font-weight-bold">Expired Date</div>--}}
-                        {{--                            <div>{{ $obat->Expired }}</div>--}}
-                        {{--                        </td>--}}
                         <td class="text-center">
                             @if($obat->stock <= 0)
                                 <div class="text-danger">

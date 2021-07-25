@@ -7,23 +7,46 @@ use App\Models\RestockItem;
 use App\Models\Supplier;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\Component;
+use App\Models\Restock as RestockModel;
 
 class Restock extends Component
 {
-    public $id_supplier;
+    public $supplier_id;
     public $error_count;
 
-    protected $listeners = ['addToRestock', 'doRestock'];
+    protected $listeners = ['addToRestock', 'doRestock', 'selectedCategory'];
 
     protected $rules = [
-        'id_supplier' => 'required',
+        'supplier_id' => 'required|numeric|min:1',
     ];
+
+    public function hydrate()
+    {
+        $this->emit('select2');
+    }
+
+    public function mount()
+    {
+        $this->supplier_id = 0;
+    }
 
     public function render()
     {
         return view('livewire.restock', [
-            'suppliers' => Supplier::orderBy('nama')->get()
+            'suppliers' => Supplier::orderBy('nama')->get(),
+            'cart' => Cart::instance('restock')
         ]);
+    }
+
+    public function selectedCategory($item)
+    {
+        if ($item) {
+            $this->supplier_id = $item;
+        } else {
+            $this->supplier_id = null;
+        }
+
+        $this->emit('hideLoading');
     }
 
     public function addToRestock(Obat $obat)
@@ -35,8 +58,10 @@ class Restock extends Component
             $obat->price,
             1,
             [
-                'max' => $obat->stock,
-                'image' => $obat->image
+                'image' => $obat->image,
+                'currentStock' => $obat->stock,
+                'currentPrice' => $obat->price,
+                'expiry_date' => ""
             ]
         );
     }
@@ -51,36 +76,51 @@ class Restock extends Component
         Cart::instance('restock')->destroy();
     }
 
+    // Update HARGA produk dalam cart
+    public function updatePriceRestock($rowId, $price, $id)
+    {
+        if ($price > 0) {
+            Cart::instance('restock')->update($rowId, ['price' => $price]);
+        } else {
+            $this->addError('qty_error.' . $rowId, 'Dilarang ada produk dengan qty 0 pcs');
+        }
+    }
+
+    // Update JUMLAH / QTY produk dalam cart
     public function updateQtyRestock($rowId, $qty, $id)
     {
         if ($qty > 0) {
-            $obat = Obat::find($id);
-
-            if ($obat->stock < $qty) {
-                $this->addError('qty_error', 'Dilarang ada qty produk melebihi stok');
-            }
-
-            Cart::instance('restock')->update($rowId, $qty);
+            Cart::instance('restock')->update($rowId, ['qty' => $qty]);
         } else {
-            $this->addError('qty_error', 'Dilarang ada produk dengan qty 0 pcs');
+            $this->addError('qty_error.' . $rowId, 'Dilarang ada produk dengan qty 0 pcs');
         }
+    }
+
+    public function updateExpiryRestock($rowId, $date, $id)
+    {
+        $item = Cart::instance('restock')->get($rowId);
+        $option = $item->options->merge(['expiry_date' => $date]);
+
+        Cart::instance('restock')->update($rowId, ['options' => $option]);
     }
 
     public function doRestock()
     {
         $this->validate();
 
-//        foreach (Cart::instance('restock')->content() as $item) {
-//            $product = Obat::find($item->id);
-//
-//            if ($item->qty > $product->stock) {
-//                return redirect()->back()->with('error', 'Pesanan gagal doRestock. Terdapat pesanan dengan jumlah stok lebih dari yang tersedia.');
-//            }
-//        }
+        foreach (Cart::instance('restock')->content() as $item) {
+            if ($item->options->expiry_date == "") {
+                session()->flash('error', 'Pesanan gagal restock. Harap isi semua expiry date');
 
-        $restock = Restock::create([
+                $this->emit('hideLoading');
+
+                return redirect()->route('restock.create');
+            }
+        }
+
+        $restock = RestockModel::create([
             'user_id' => auth()->id(),
-            'id_supplier' => $this->id_supplier,
+            'supplier_id' => $this->supplier_id,
             'count' => Cart::instance('restock')->count(),
             'total' => Cart::instance('restock')->totalFloat()
         ]);
@@ -93,9 +133,10 @@ class Restock extends Component
                     'restock_id' => $restock->id,
                     'obat_id' => $item->id,
                     'name' => $item->name,
-                    'price' => $item->price,
+                    'harga_beli' => $item->price,
                     'qty' => $item->qty,
-                    'image' => $obat->image
+                    'image' => $obat->image,
+                    'expiry_date' => $item->options->expiry_date
                 ]);
 
                 if ($restock_item) {
@@ -108,10 +149,14 @@ class Restock extends Component
 
             session()->flash('info', 'Pesanan ke Supplier berhasil dibuat.');
 
+            $this->emit('hideLoading');
+
             return redirect()->route('restock.index');
         }
 
         session()->flash('error', 'Pesanan ke Supplier gagal dibuat.');
+
+        $this->emit('hideLoading');
 
         return redirect()->route('restock.index');
     }

@@ -1,139 +1,81 @@
 <div>
-    <x-slot name="livewireCss">
-        <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
-        <style>
-            .select2-container--default .select2-search--dropdown .select2-search__field:focus {
-                outline: none;
-                box-shadow: none;
-            }
-
-            .select2-container .select2-selection--multiple, .select2-container .select2-selection--single {
-                box-sizing: border-box;
-                cursor: pointer;
-                display: block;
-                min-height: 42px;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-                -webkit-user-select: none;
-                outline: none;
-                background-color: #fdfdff;
-                border-color: #e4e6fc;
-            }
-
-            .select2-dropdown {
-                border-color: #e4e6fc !important;
-            }
-
-            .select2-container.select2-container--open .select2-selection--multiple {
-                background-color: #fefeff;
-                border-color: #95a0f4;
-            }
-
-            .select2-container.select2-container--focus .select2-selection--multiple, .select2-container.select2-container--focus .select2-selection--single {
-                background-color: #fefeff;
-                border-color: #95a0f4;
-            }
-
-            .select2-container.select2-container--open .select2-selection--single {
-                background-color: #fefeff;
-                border-color: #95a0f4;
-            }
-
-            .select2-results__option {
-                padding: 10px;
-            }
-
-            .select2-search--dropdown .select2-search__field {
-                padding: 7px;
-            }
-
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                min-height: 42px;
-                line-height: 42px;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .select2-container--default .select2-selection--multiple .select2-selection__arrow, .select2-container--default .select2-selection--single .select2-selection__arrow {
-                position: absolute;
-                top: 1px;
-                right: 1px;
-                width: 40px;
-                min-height: 42px;
-            }
-
-            .select2-container--default .select2-selection--multiple .select2-selection__choice {
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-                color: #fff;
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-                margin-right: 5px;
-                color: #fff;
-            }
-
-            .select2-container--default .select2-selection--multiple .select2-selection__choice,
-            .select2-container--default .select2-results__option[aria-selected=true],
-            .select2-container--default .select2-results__option--highlighted[aria-selected] {
-                background-color: #6777ef;
-                color: #fff;
-            }
-
-            .select2-results__option {
-                padding-right: 10px 15px;
-            }
-        </style>
-    </x-slot>
-
-    <x-slot name="livewireJs">
-        <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
-        <script>
-            $('#id_supplier').select2();
-        </script>
-    </x-slot>
-
     <div class="card">
         <div class="card-header justify-content-between">
             <h4>Keranjang</h4>
             <a href="" class="text-danger" wire:click.prevent="clearRestock">Remove all</a>
         </div>
         <div class="card-body">
-            @forelse(Cart::instance('restock')->content() as $obat)
-                <div class="row mb-4">
-                    <div class="col-3 text-right">
-                        <img
-                            src="{{ asset($obat->options->image) }}"
-                            class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
-                    </div>
-                    <div class="col-6">
-                        <div class="mb-1 font-weight-bold">{{ $obat->name }}</div>
-                        <div class="mb-1">
-                            Rp {{ number_format($obat->price, 0, ',', '.') }}
+            @forelse($cart->content() as $obat)
+                <div class="row mb-4 no-gutters" wire:key="{{ $loop->index }}">
+                    <div class="col-5 text-center">
+                        <div>
+                            @if(file_exists(asset($obat->options->image)))
+                                <img
+                                    src="{{ asset($obat->options->image) }}"
+                                    class="w-50 img-fluid mx-auto d-block" alt="{{ $obat->name }}">
+                            @else
+                                <img
+                                    src="https://via.placeholder.com/100?text=No+image"
+                                    class="img-fluid mx-auto d-block" alt="{{ $obat->name }}">
+                            @endif
                         </div>
-                        <div class="input-group input-group-sm">
-                            <input type="number"
-                                   class="form-control form-control-sm {{ $obat->options->max < $obat->qty ? 'is-invalid' : '' }}"
-                                   placeholder="Qty Obat"
-                                   value={{ $obat->qty }} max={{ $obat->options->max }} min="0"
-                                   wire:change.prevent="updateQtyRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})">
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon1">pcs</span>
+                        <div class="mt-1 font-weight-bold">{{ $obat->name }}</div>
+                        <div class="mt-1" wire:key="currentPrice_{{ $loop->index }}">
+                            Rp {{ number_format($obat->options->currentPrice, 0, ',', '.') }}
+                        </div>
+                        <div class="mt-1" wire:key="currentStock_{{ $loop->index }}">{{ $obat->options->currentStock }}
+                            pcs
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label for="harga_beli" class="col-form-label">Harga beli</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                </div>
+                                <input
+                                    wire:key="price_{{ $loop->index }}"
+                                    type="number"
+                                    id="harga_beli"
+                                    class="form-control form-control-sm"
+                                    placeholder="Harga beli"
+                                    value="{{ $obat->options->currentPrice == $obat->price ? $obat->options->currentPrice : $obat->price }}"
+                                    min="0"
+                                    wire:change="updatePriceRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})">
+                            </div>
+                            <label for="expiry_date" class="col-form-label">Expiry Date:</label>
+                            <input
+                                wire:key="expiry_date_{{ $loop->index }}"
+                                type="date"
+                                class="form-control form-control-sm"
+                                placeholder="Expiry date"
+                                id="expiry_date"
+                                value="{{ $obat->options->expiry_date }}"
+                                wire:change="updateExpiryRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})"
+                                min="{{ date('Y-m-d') }}">
+                            <label for="qty" class="col-form-label">Qty restock</label>
+                            <div class="input-group input-group-sm">
+                                <input
+                                    wire:key="qty_restock_{{ $loop->index }}"
+                                    type="number"
+                                    id="qty"
+                                    class="form-control form-control-sm"
+                                    placeholder="Qty Obat"
+                                    value="{{ $obat->qty }}" min="0"
+                                    wire:change="updateQtyRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon1">pcs</span>
+                                </div>
+                            </div>
+                            <div>
+                                @error('qty_error.'.$obat->rowId)
+                                <small class="invalid-feedback">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                        <div
-                            class="text-small {{ $obat->options->max < $obat->qty ? 'text-danger' : 'text-muted' }}">
-                            Max {{ $obat->options->max }} pcs.
-                        </div>
                     </div>
-                    <div class="col-3 text-right">
+                    <div class="col-2 text-right">
                         <button class="btn btn-danger btn-sm" wire:click="deleteFromRestock('{{ $obat->rowId }}')">
                             <i class="fa fa-trash"></i>
                         </button>
@@ -149,27 +91,28 @@
             <div class="row align-items-center mb-3">
                 <div class="col-3">Total</div>
                 <div class="col-9 font-weight-bold text-right">
-                    Rp {{ @Cart::instance('restock')->total() }}
+                    Rp {{ @$cart->total() }}
                 </div>
             </div>
             <div class="row align-items-center mb-3">
                 <div class="col-3">
-                    <label for="id_supplier" class="col-form-label">Supplier</label>
+                    <label for="supplier_id" class="col-form-label">Supplier</label>
                 </div>
-                <div class="col-9">
-                    <select name="id_supplier" id="id_supplier" class="form-control">
-                        <option value="" selected disabled>Pilih Supplier</option>
+                <div class="col-9" wire:ignore>
+                    <select class="form-control"
+                            wire:model="supplier_id"
+                            id="supplierId">
+                        <option value="0" selected disabled>Pilih Supplier</option>
                         @foreach($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->nama }}</option>
+                            <option value={{ $supplier->id }}>{{ $supplier->nama }}</option>
                         @endforeach
                     </select>
-                    {{--                    <input type="text" class="form-control @error('nama_pembeli') is-invalid @enderror"--}}
-                    {{--                           placeholder="Nama pembeli" wire:model="nama_pembeli" id="nama_pembeli">--}}
-                    @error('id_supplier') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                    @error('supplier_id') <small class="invalid-feedback">{{ $message }}</small> @enderror
                 </div>
             </div>
-            <button class="btn btn-primary btn-block"
-                    {{ Cart::instance('restock')->count() <= 0 ? 'disabled' : '' }} wire:click.prevent="$emit('restockButtonClicked')">
+            <button
+                class="btn btn-primary btn-block {{ $cart->count() <= 0 || $supplier_id == 0 ? 'disabled' : '' }}"
+                {{ $cart->count() <= 0 || $supplier_id == 0 ? 'disabled' : '' }} wire:click.prevent="$emit('restockButtonClicked')">
                 <i class="fa fa-check"></i> Restock
             </button>
         </div>

@@ -41,7 +41,7 @@
                         <span>Supplier</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('restock') ? 'active' : '' }}">
+                <li class="{{ request()->is('restock*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('restock') }}">
                         <i class="fas fa-plus"></i>
                         <span>Pemesanan ke Supplier</span>

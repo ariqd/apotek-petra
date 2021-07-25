@@ -10,14 +10,10 @@
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
 
-    <!-- CSS Libraries -->
-{{-- <link rel="stylesheet" href="{{ asset('assets/modules/prism/prism.css') }}"> --}}
-
-<!-- Template CSS -->
+    <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
     {{ @$css }}
-    {{ @$livewireCss }}
 
     <style>
         .loading {
@@ -87,7 +83,6 @@
 <script src="{{ asset('assets/js/page/bootstrap-modal.js') }}"></script>
 @livewireScripts
 {{ @$js }}
-{{ @$livewireJs }}
 </body>
 
 </html>

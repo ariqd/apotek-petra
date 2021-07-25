@@ -124,7 +124,7 @@
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $obat->name }}</div>
                                 <div>Harga jual: Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
-                                <div>Harga beli: Rp {{ number_format($obat->harga_beli, 0, ',', '.') }}</div>
+{{--                                <div>Harga beli: Rp {{ number_format($obat->harga_beli, 0, ',', '.') }}</div>--}}
                             </td>
                             <td class="align-middle">{{ $obat->kategori }}</td>
                             <td class="align-middle">{{ $obat->type }}</td>
@@ -134,10 +134,10 @@
                             @if(Auth::user()->role == 'Pemilik')
                                 <td class="text-center align-middle">
                                     <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                            class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
-                                        <i class="fa fa-plus"></i> Tambah Stok
+                                            class="btn btn-sm btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
+                                        Detail
                                     </button>
-                                    <a href="{{ route('obat.edit', $obat) }}" class="btn btn-light ml-3">
+                                    <a href="{{ route('obat.edit', $obat) }}" class="btn btn-sm btn-light ml-3">
                                         Edit
                                     </a>
                                 </td>

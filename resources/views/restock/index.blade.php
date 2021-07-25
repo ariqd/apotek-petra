@@ -33,26 +33,26 @@
                     <thead class="thead-dark">
                     <tr scope="row">
                         <th scope="col" class="w-auto">Tanggal</th>
-                        <th scope="col" class="w-auto">Nama Pembeli</th>
+                        <th scope="col" class="w-auto">Nama Supplier</th>
                         <th scope="col" class="w-auto">Jumlah Obat</th>
                         <th scope="col" class="w-auto">Total</th>
                         <th scope="col" class="w-auto"></th>
                     </tr>
                     </thead>
                     <tbody>
-{{--                    @foreach($transactions as $transaction)--}}
-{{--                        <tr scope="row">--}}
-{{--                            <td>{{ $transaction->created_at->translatedFormat('l, jS F Y g:i') }}</td>--}}
-{{--                            <td class="font-weight-bold">{{ $transaction->nama_pembeli }}</td>--}}
-{{--                            <td>{{ $transaction->count }}</td>--}}
-{{--                            <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>--}}
-{{--                            <td class="text-center">--}}
-{{--                                <a href="{{ route('transaksi.show', $transaction->id) }}" class="btn btn-primary">--}}
-{{--                                    Detail Transaksi--}}
-{{--                                </a>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
+                    @foreach($restocks as $restock)
+                        <tr scope="row">
+                            <td>{{ $restock->created_at->translatedFormat('l, jS F Y g:i') }}</td>
+                            <td class="font-weight-bold">{{ $restock->supplier->nama }}</td>
+                            <td>{{ $restock->count }}</td>
+                            <td>Rp {{ number_format($restock->total, 0, ',', '.') }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('restock.show', $restock->id) }}" class="btn btn-primary btn-sm">
+                                    Detail Restock
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
