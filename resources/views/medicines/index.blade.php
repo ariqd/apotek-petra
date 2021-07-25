@@ -133,10 +133,9 @@
                             <td class="align-middle">{{ $obat->Rak }}</td>
                             @if(Auth::user()->role == 'Pemilik')
                                 <td class="text-center align-middle">
-                                    <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                            class="btn btn-sm btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
+                                    <a class="btn btn-sm btn-primary" href="{{ route('obat.show', $obat->id)}}">
                                         Detail
-                                    </button>
+                                    </a>
                                     <a href="{{ route('obat.edit', $obat) }}" class="btn btn-sm btn-light ml-3">
                                         Edit
                                     </a>

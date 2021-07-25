@@ -91,6 +91,7 @@ class ObatController extends Controller
     public function show($id)
     {
         return view('medicines.show', [
+            'obat' => Obat::find($id),
             'details' => RestockItem::where('obat_id', $id)->latest()->get()
         ]);
     }

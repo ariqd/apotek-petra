@@ -11,4 +11,9 @@ class Obat extends Model
 
     protected $table = 'obat';
     protected $guarded = ['id'];
+
+    public function restocks()
+    {
+        return $this->hasMany(RestockItem::class);
+    }
 }
