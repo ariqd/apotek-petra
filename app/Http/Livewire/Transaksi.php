@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Obat;
+use App\Models\RestockItem;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Livewire\Component;
@@ -24,17 +25,19 @@ class Transaksi extends Component
         return view('livewire.transaksi');
     }
 
-    public function addToCart(Obat $obat)
+    public function addToCart($id)
     {
+        $restock = RestockItem::find($id);
+
         Cart::add(
-            $obat->id,
-            $obat->name,
+            $restock->id,
+            $restock->obat->name,
             1,
-            $obat->price,
+            $restock->obat->price,
             1,
             [
-                'max' => $obat->stock,
-                'image' => $obat->image
+                'max' => $restock->qty,
+                'image' => $restock->obat->image,
             ]
         );
     }
@@ -52,9 +55,9 @@ class Transaksi extends Component
     public function updateQty($rowId, $qty, $id)
     {
         if ($qty > 0) {
-            $obat = Obat::find($id);
+            $restock = RestockItem::find($id);
 
-            if ($obat->stock < $qty) {
+            if ($restock->stock < $qty) {
                 $this->addError('qty_error', 'Dilarang ada qty produk melebihi stok');
             }
 
@@ -69,9 +72,9 @@ class Transaksi extends Component
         $this->validate();
 
         foreach (Cart::content() as $item) {
-            $product = Obat::find($item->id);
+            $restock = RestockItem::find($item->id);
 
-            if ($item->qty > $product->stock) {
+            if ($item->qty > $restock->qty) {
                 return redirect()->back()->with('error', 'Pesanan gagal checkout. Terdapat pesanan dengan jumlah stok lebih dari yang tersedia.');
             }
         }
@@ -85,21 +88,21 @@ class Transaksi extends Component
 
         if ($transaction) {
             foreach (Cart::content() as $item) {
-                $obat = Obat::find($item->id);
+                $restock = RestockItem::find($item->id);
 
                 $transaction_item = TransactionItem::create([
                     'transaction_id' => $transaction->id,
-                    'obat_id' => $item->id,
+                    'restock_item_id' => $item->id,
                     'name' => $item->name,
                     'price' => $item->price,
                     'qty' => $item->qty,
-                    'image' => $obat->image
+                    'image' => $restock->obat->image
                 ]);
 
                 if ($transaction_item) {
-                    $obat->stock -= $item->qty;
+                    $restock->qty -= $item->qty;
 
-                    $obat->save();
+                    $restock->save();
                 }
             }
             Cart::destroy();

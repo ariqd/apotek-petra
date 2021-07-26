@@ -16,7 +16,9 @@
         <script src="{{ asset('assets/modules/jquery-selectric/jquery.selectric.min.js') }}"></script>
         <script>
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                $('#myTable').DataTable({
+                    "order": []
+                });
                 $('.selectric').selectric();
 
                 $('#kategori').on('change', function () {
@@ -116,7 +118,7 @@
                     <tbody>
                     @foreach ($medicines as $obat)
                         <tr scope="row"
-                            style="background-color: {{ $obat->stock <= $obat->reorder_point ? '#ffebee' : '' }}">
+                            style="background-color: {{ $obat->restocks->sum('qty') <= $obat->reorder_point ? '#ffebee' : '' }}">
                             <td class="w-25">
                                 <img src="{{ asset($obat->image) }}" class="w-25 mx-auto d-block"
                                      alt="{{ $obat->name }}">
@@ -126,11 +128,11 @@
                                 <div>Harga jual: Rp {{ number_format($obat->price, 0, ',', '.') }}</div>
 {{--                                <div>Harga beli: Rp {{ number_format($obat->harga_beli, 0, ',', '.') }}</div>--}}
                             </td>
-                            <td class="align-middle">{{ $obat->kategori }}</td>
+                            <td class="align-middle">{{ ucwords($obat->kategori) }}</td>
                             <td class="align-middle">{{ $obat->type }}</td>
-                            <td class="align-middle">{{ $obat->stock }} pcs</td>
+                            <td class="align-middle">{{ $obat->restocks->sum('qty') }} pcs</td>
                             <td class="align-middle">{{ $obat->reorder_point }} pcs</td>
-                            <td class="align-middle">{{ $obat->Rak }}</td>
+                            <td class="align-middle">{{ $obat->rak }}</td>
                             @if(Auth::user()->role == 'Pemilik')
                                 <td class="text-center align-middle">
                                     <a class="btn btn-sm btn-primary" href="{{ route('obat.show', $obat->id)}}">

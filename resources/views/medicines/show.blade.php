@@ -1,10 +1,10 @@
 <x-stisla-layout>
     <x-slot name="title">
-        Detail Restock {{ $obat->name }}
+        Detail Stok {{ $obat->name }}
     </x-slot>
 
     <div class="section-header">
-        <h1>Detail Restock {{ $obat->name }}</h1>
+        <h1>Detail Stok {{ $obat->name }}</h1>
     </div>
 
     <x-slot name="css">
@@ -18,7 +18,9 @@
         <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                $('#myTable').DataTable({
+                    "order": []
+                });
             });
         </script>
     </x-slot>
@@ -31,7 +33,9 @@
                     <tr scope="row">
                         <th scope="col" class="w-auto">Tanggal Restock</th>
                         <th scope="col" class="w-auto">Tanggal Kadaluarsa</th>
-                        <th scope="col" class="w-auto">Qty</th>
+                        <th scope="col" class="w-auto">Harga Beli</th>
+                        <th scope="col" class="w-auto">Qty Restock</th>
+                        <th scope="col" class="w-auto">Qty Sekarang</th>
                         <th scope="col" class="w-auto">Subtotal</th>
                     </tr>
                     </thead>
@@ -40,8 +44,11 @@
                         <tr scope="row">
                             <td class="align-middle">{{ $item->created_at->translatedFormat('l, jS F Y g:i') }}</td>
                             <td class="align-middle">{{ $item->expiry_date }}</td>
+                            <td class="align-middle">Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
+                            <td class="align-middle">{{ $item->qty_restock }} {{ $item->obat->type }}</td>
                             <td class="align-middle">{{ $item->qty }} {{ $item->obat->type }}</td>
-                            <td class="align-middle">Rp {{ number_format($item->harga_beli * $item->qty, 0, ',', '.') }}</td>
+                            <td class="align-middle">
+                                Rp {{ number_format($item->harga_beli * $item->qty, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                     </tbody>

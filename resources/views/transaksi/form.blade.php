@@ -132,6 +132,8 @@
                 })
 
                 Livewire.on('checkoutButtonClicked', () => {
+                    $('#loading').show();
+
                     swal({
                         title: "Checkout pesanan ini?",
                         text: "Stok akan otomatis dikurangi berdasarkan jumlah pesanan",
@@ -142,11 +144,15 @@
                         .then((willDelete) => {
                             if (willDelete) {
                                 Livewire.emit('checkout')
+                            } else {
+                                $('#loading').hide();
                             }
                         });
                 })
 
                 Livewire.on('restockButtonClicked', () => {
+                    $('#loading').show();
+
                     swal({
                         title: "Ajukan pemesanan ke Supplier ini?",
                         text: "Stok akan otomatis ditambah berdasarkan jumlah pesanan",
@@ -156,9 +162,9 @@
                     })
                         .then((willDelete) => {
                             if (willDelete) {
-                                $('#loading').show();
-
                                 Livewire.emit('doRestock')
+                            } else {
+                                $('#loading').hide();
                             }
                         });
                 })

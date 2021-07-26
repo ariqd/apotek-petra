@@ -31,8 +31,9 @@
                     <tr scope="row">
                         <th scope="col" class="w-auto"></th>
                         <th scope="col" class="w-auto">Nama Obat</th>
-                        <th scope="col" class="w-auto">Qty</th>
-                        <th scope="col" class="w-auto">Subtotal</th>
+                        <th scope="col" class="w-auto text-center">Kadaluarsa</th>
+                        <th scope="col" class="w-auto text-center">Qty</th>
+                        <th scope="col" class="w-auto text-right">Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,20 +45,24 @@
                             </td>
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $item->name }}</div>
-                                <div>Rp {{ number_format($item->obat->price, 0, ',', '.') }}</div>
+                                <div>Harga jual: Rp {{ number_format($item->price, 0, ',', '.') }}</div>
+                                <div>Harga beli: Rp {{ number_format($item->stock->harga_beli, 0, ',', '.') }}</div>
                             </td>
-                            <td class="align-middle">{{ $item->qty }} {{ $item->obat->type }}</td>
-                            <td class="align-middle">Rp {{ number_format($item->price * $item->qty, 0, ',', '.') }}</td>
+                            <td class="align-middle text-center">
+                                {{ $item->stock->expiry_date }}
+                            </td>
+                            <td class="align-middle text-center">
+                                {{ $item->qty }} {{ $item->stock->obat->type }}
+                            </td>
+                            <td class="align-middle text-right">Rp {{ number_format($item->price * $item->qty, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="3">
-                            <div class="text-right">Total</div>
-                        </td>
-                        <td class="font-weight-bold">
-                            Rp {{ number_format($transaction->total, 0, ',', '.') }}
+                        <td colspan="4"></td>
+                        <td class="text-right">
+                            Total: <span class="font-weight-bold">Rp {{ number_format($transaction->total, 0, ',', '.') }}</span>
                         </td>
                     </tr>
                     </tfoot>

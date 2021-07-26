@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Obat;
 use App\Models\RestockItem;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -41,7 +42,9 @@ class ObatController extends Controller
      */
     public function create()
     {
-        return view('medicines.form');
+        return view('medicines.form', [
+            'suppliers' => Supplier::orderBy('nama')->get(),
+        ]);
     }
 
     /**
@@ -54,8 +57,6 @@ class ObatController extends Controller
         $data = $request->all();
 
         unset($data['_token']);
-
-        // dd($request->all());
 
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
@@ -71,8 +72,10 @@ class ObatController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'image' => ['required'],
             'price' => ['required', 'numeric', 'min:100'],
-            'stock' => ['required', 'numeric'],
+//            'stock' => ['required', 'numeric'],
             'reorder_point' => ['required', 'numeric'],
+            'kategori' => ['required'],
+            'rak' => ['required'],
             'type' => ['required'],
         ])->validate();
 
@@ -98,9 +101,6 @@ class ObatController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(Obat $obat)
     {
@@ -112,10 +112,6 @@ class ObatController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Obat $obat)
     {
@@ -147,16 +143,13 @@ class ObatController extends Controller
             Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
                 'price' => ['required', 'numeric', 'min:100'],
-                // 'stock' => ['required', 'numeric'],
                 'type' => ['required'],
                 'reorder_point' => ['required'],
+                'kategori' => ['required'],
+                'rak' => ['required'],
             ])->validate();
 
             if ($obat->update($data)) {
-                // Activity::create([
-                //     'message' => 'Admin "' . auth()->user()->name . '" mengubah data produk: ' . $obat->name
-                // ]);
-
                 return redirect()->route('obat.index')->with('info', 'Data produk berhasil diubah');
             }
 

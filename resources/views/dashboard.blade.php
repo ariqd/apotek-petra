@@ -37,10 +37,10 @@
                     series: [{
                         name: "Terjual pcs",
                         data: [
-                            {{ $bestSeller->values()[0] }},
-                            {{ $bestSeller->values()[1] }},
-                            {{ $bestSeller->values()[2] }},
-                            {{ $bestSeller->values()[3] }},
+                            {{ $bestSeller->values()[0] ?? 0}},
+                            {{ $bestSeller->values()[1] ?? 0}},
+                            {{ $bestSeller->values()[2] ?? 0}},
+                            {{ $bestSeller->values()[3] ?? 0}},
                             {{ $bestSeller->values()[4] ?? 0 }},
                         ],
                     }],
@@ -61,11 +61,85 @@
                             enabled: true
                         },
                         categories: [
-                            "{{ $bestSeller->keys()[0] }}",
-                            "{{ $bestSeller->keys()[1] }}",
-                            "{{ $bestSeller->keys()[2] }}",
-                            "{{ $bestSeller->keys()[3] }}",
+                            "{{ $bestSeller->keys()[0] ?? '' }}",
+                            "{{ $bestSeller->keys()[1] ?? '' }}",
+                            "{{ $bestSeller->keys()[2] ?? '' }}",
+                            "{{ $bestSeller->keys()[3] ?? '' }}",
                             "{{ $bestSeller->keys()[4] ?? '' }}",
+                        ],
+                    },
+                    yaxis: {
+                        labels: {
+                            padding: 4
+                        },
+                    },
+                    chartOptions: {
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '1%',
+                                barHeight: '70%',
+                            }
+                        }
+                    },
+                    colors: ["#6777EF"],
+                    legend: {
+                        show: true,
+                    },
+                })).render();
+
+                window.ApexCharts && (new ApexCharts(document.getElementById('chart-bestrestock'), {
+                    chart: {
+                        type: "bar",
+                        fontFamily: 'inherit',
+                        height: 240,
+                        parentHeightOffset: 0,
+                        toolbar: {
+                            show: false,
+                        },
+                        animations: {
+                            enabled: false
+                        },
+                    },
+                    fill: {
+                        opacity: 1,
+                    },
+                    stroke: {
+                        width: 2,
+                        lineCap: "round",
+                        curve: "straight",
+                    },
+                    series: [{
+                        name: "Terjual pcs",
+                        data: [
+                            {{ $bestRestock->values()[0] ?? 0}},
+                            {{ $bestRestock->values()[1] ?? 0}},
+                            {{ $bestRestock->values()[2] ?? 0}},
+                            {{ $bestRestock->values()[3] ?? 0}},
+                            {{ $bestRestock->values()[4] ?? 0 }},
+                        ],
+                    }],
+                    grid: {
+                        padding: {
+                            top: -20,
+                            right: 0,
+                            left: -4,
+                            bottom: -4
+                        },
+                        strokeDashArray: 4,
+                    },
+                    xaxis: {
+                        labels: {
+                            padding: 0,
+                        },
+                        tooltip: {
+                            enabled: true
+                        },
+                        categories: [
+                            "{{ $bestRestock->keys()[0] ?? '' }}",
+                            "{{ $bestRestock->keys()[1] ?? '' }}",
+                            "{{ $bestRestock->keys()[2] ?? '' }}",
+                            "{{ $bestRestock->keys()[3] ?? '' }}",
+                            "{{ $bestRestock->keys()[4] ?? '' }}",
                         ],
                     },
                     yaxis: {
@@ -144,8 +218,68 @@
                     },
                 };
 
-                var chart = new ApexCharts(document.querySelector("#line-chart"), options);
+                var chart = new ApexCharts(document.querySelector("#grafikPenjualan"), options);
                 chart.render();
+
+                var optionsRestock = {
+                    series: [{
+                        name: "Total pemesanan",
+                        data: [
+                            {{ $restock[0] }},
+                            {{ $restock[1] }},
+                            {{ $restock[2] }},
+                            {{ $restock[3] }},
+                            {{ $restock[4] }},
+                            {{ $restock[5] }},
+                            {{ $restock[6] }},
+                            {{ $restock[7] }},
+                            {{ $restock[8] }},
+                            {{ $restock[9] }},
+                            {{ $restock[10] }},
+                            {{ $restock[11] }},
+                        ]
+                    }],
+                    chart: {
+                        height: 350,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function (value) {
+                            return "Rp " + formatNumber(value);
+                        }
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    title: {
+                        text: 'Grafik Pemesanan Per Bulan',
+                        align: 'center'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    },
+                    colors: ["#6777EF"],
+                    yaxis: {
+                        labels: {
+                            formatter: function (value) {
+                                return "Rp " + formatNumber(value);
+                            }
+                        },
+                    },
+                };
+
+                var lineChartRestock = new ApexCharts(document.querySelector("#grafikRestock"), optionsRestock);
+                lineChartRestock.render();
             });
             // @formatter:on
         </script>
@@ -159,39 +293,49 @@
         <div class="row">
             <div class="col-12">
                 <div class="card card-body">
-                    <div id="line-chart"></div>
+                    <div id="grafikPenjualan"></div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
                 <div class="card card-body">
-                    <h5 class="text-center mb-3">Riwayat Transaksi Terakhir</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Obat</th>
-                                <th>Jumlah</th>
-                                <th>Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($riwayatTransaksi as $obat)
-                                <tr>
-                                    <td>{{ $obat->name }}</td>
-                                    <td>{{ $obat->qty }} pcs</td>
-                                    <td>Rp {{ number_format($obat->price * $obat->qty, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-
-                        </table>
-                    </div>
+                    <div id="grafikRestock"></div>
                 </div>
             </div>
+{{--            <div class="col-6">--}}
+{{--                <div class="card card-body">--}}
+{{--                    <h5 class="text-center mb-3">Riwayat Transaksi Terakhir</h5>--}}
+{{--                    <div class="table-responsive">--}}
+{{--                        <table class="table table-hover">--}}
+{{--                            <thead>--}}
+{{--                            <tr>--}}
+{{--                                <th>Obat</th>--}}
+{{--                                <th>Jumlah</th>--}}
+{{--                                <th>Total</th>--}}
+{{--                            </tr>--}}
+{{--                            </thead>--}}
+{{--                            <tbody>--}}
+{{--                            @foreach($riwayatTransaksi as $obat)--}}
+{{--                                <tr>--}}
+{{--                                    <td>{{ $obat->name }}</td>--}}
+{{--                                    <td>{{ $obat->qty }} pcs</td>--}}
+{{--                                    <td>Rp {{ number_format($obat->price * $obat->qty, 0, ',', '.') }}</td>--}}
+{{--                                </tr>--}}
+{{--                            @endforeach--}}
+{{--                            </tbody>--}}
+{{--                        </table>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <div class="col-6">
                 <div class="card card-body">
                     <h5 class="text-center">Obat Best Seller</h5>
                     <div id="chart-bestseller"></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-body">
+                    <h5 class="text-center">Obat Paling Banyak Dipesan</h5>
+                    <div id="chart-bestrestock"></div>
                 </div>
             </div>
         </div>

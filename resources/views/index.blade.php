@@ -62,7 +62,7 @@
                         <th scope="col" class="w-auto">Stok Saat Ini</th>
                         <th scope="col" class="w-auto">Reorder Point</th>
                         <th scope="col" class="w-auto">Jumlah Kurang</th>
-                        <th scope="col" class="w-auto"></th>
+{{--                        <th scope="col" class="w-auto"></th>--}}
                     </tr>
                     </thead>
                     <tbody>
@@ -75,15 +75,15 @@
                             <td class="align-middle">
                                 <div class="font-weight-bold">{{ $obat->name }}</div>
                             </td>
-                            <td class="align-middle">{{ $obat->stock }} {{ $obat->type }}</td>
+                            <td class="align-middle">{{ $obat->restocks->sum('qty') }} {{ $obat->type }}</td>
                             <td class="align-middle">{{ $obat->reorder_point }} {{ $obat->type }}</td>
-                            <td class="align-middle">{{ $obat->reorder_point - $obat->stock }} {{ $obat->type }}</td>
-                            <td class="text-center align-middle">
-                                <button data-toggle="modal" data-target="#view-modal" id="getUser"
-                                        class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">
-                                    <i class="fa fa-plus"></i> Tambah Stok
-                                </button>
-                            </td>
+                            <td class="align-middle">{{ $obat->reorder_point - $obat->restocks->sum('qty') }} {{ $obat->type }}</td>
+{{--                            <td class="text-center align-middle">--}}
+{{--                                <button data-toggle="modal" data-target="#view-modal" id="getUser"--}}
+{{--                                        class="btn btn-primary" data-url="{{ route('dynamicModal', $obat)}}">--}}
+{{--                                    <i class="fa fa-plus"></i> Tambah Stok--}}
+{{--                                </button>--}}
+{{--                            </td>--}}
                         </tr>
                     @endforeach
                     </tbody>

@@ -59,7 +59,7 @@ class Restock extends Component
             1,
             [
                 'image' => $obat->image,
-                'currentStock' => $obat->stock,
+                'currentStock' => $obat->restocks->sum('qty'),
                 'currentPrice' => $obat->price,
                 'expiry_date' => ""
             ]
@@ -129,21 +129,22 @@ class Restock extends Component
             foreach (Cart::instance('restock')->content() as $item) {
                 $obat = Obat::find($item->id);
 
-                $restock_item = RestockItem::create([
+                RestockItem::create([
                     'restock_id' => $restock->id,
                     'obat_id' => $item->id,
                     'name' => $item->name,
                     'harga_beli' => $item->price,
                     'qty' => $item->qty,
+                    'qty_restock' => $item->qty,
                     'image' => $obat->image,
                     'expiry_date' => $item->options->expiry_date
                 ]);
 
-                if ($restock_item) {
-                    $obat->stock += $item->qty;
-
-                    $obat->save();
-                }
+//                if ($restock_item) {
+//                    $obat->stock += $item->qty;
+//
+//                    $obat->save();
+//                }
             }
             Cart::instance('restock')->destroy();
 

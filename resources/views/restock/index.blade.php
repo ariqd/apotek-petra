@@ -21,7 +21,9 @@
         <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                $('#myTable').DataTable({
+                    "order": []
+                });
             });
         </script>
     </x-slot>

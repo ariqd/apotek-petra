@@ -28,11 +28,11 @@
                                    placeholder="Qty Obat"
                                    value={{ $obat->qty }} max={{ $obat->options->max }} min="0"
                                    wire:change.prevent="updateQty('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})">
-                            <div class="input-group-append">
+                            <div class="input-group-append" wire:key="pcs_{{ $loop->index }}">
                                 <span class="input-group-text" id="basic-addon1">pcs</span>
                             </div>
                         </div>
-                        <div
+                        <div wire:key="max_{{ $loop->index }}"
                             class="text-small {{ $obat->options->max < $obat->qty ? 'text-danger' : 'text-muted' }}">
                             Max {{ $obat->options->max }} pcs.
                         </div>
@@ -52,7 +52,10 @@
         <div class="card-footer">
             <div class="row align-items-center mb-3">
                 <div class="col-3">Total</div>
-                <div class="col-9 font-weight-bold text-right">
+                <div class="col-9 font-weight-bold text-right" wire:loading wire:target="updateQty">
+                    loading...
+                </div>
+                <div class="col-9 font-weight-bold text-right" wire:loading.remove wire:target="updateQty">
                     Rp {{ @Cart::total() }}
                 </div>
             </div>

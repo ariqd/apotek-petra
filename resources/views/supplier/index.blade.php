@@ -22,7 +22,9 @@
         <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                $('#myTable').DataTable({
+                    "order": []
+                });
 
                 $(document).on('click', '.link', function (e) {
                     e.preventDefault();
@@ -64,7 +66,6 @@
                         <th scope="col" class="w-auto">Alamat</th>
                         <th scope="col" class="w-auto">Kota</th>
                         <th scope="col" class="w-auto">No. Telp</th>
-{{--                        <th scope="col" class="w-auto">Jenis Obat</th>--}}
                         <th scope="col" class="w-auto"></th>
                     </tr>
                     </thead>
@@ -76,11 +77,14 @@
                             <td>{{ $supplier->alamat }}</td>
                             <td>{{ $supplier->kota }}</td>
                             <td>{{ $supplier->no_telp }}</td>
-{{--                            <td>{{ $supplier->jenis_obat }}</td>--}}
                             <td class="text-center">
+                                <a href="{{ route('supplier.show', $supplier) }}"
+                                   class="btn btn-primary btn-sm">
+                                    Riwayat Pesanan ({{ $supplier->restocks->count() }})
+                                </a>
                                 <button data-toggle="modal" data-target="#view-modal"
                                         data-url="{{ route('supplier.edit', $supplier) }}"
-                                        class="btn btn-primary btn-sm link">
+                                        class="btn btn-light btn-sm link ml-3">
                                     Edit
                                 </button>
                             </td>

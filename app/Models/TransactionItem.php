@@ -20,4 +20,9 @@ class TransactionItem extends Model
     {
         return $this->belongsTo(Obat::class);
     }
+
+    public function stock()
+    {
+        return $this->belongsTo(RestockItem::class, 'restock_item_id');
+    }
 }

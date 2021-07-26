@@ -18,7 +18,7 @@ class SupplierController extends Controller
     public function index()
     {
         return view('supplier.index', [
-            'suppliers' => Supplier::all()
+            'suppliers' => Supplier::orderBy('nama')->get()
         ]);
     }
 
@@ -53,13 +53,12 @@ class SupplierController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Supplier $supplier)
     {
-        //
+        return view('supplier.show', [
+            'supplier' => $supplier
+        ]);
     }
 
     /**

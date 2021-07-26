@@ -44,12 +44,12 @@
                                     min="0"
                                     wire:change="updatePriceRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})">
                             </div>
-                            <label for="expiry_date" class="col-form-label">Expiry Date:</label>
+                            <label for="expiry_date" class="col-form-label">Kadaluarsa</label>
                             <input
                                 wire:key="expiry_date_{{ $loop->index }}"
                                 type="date"
                                 class="form-control form-control-sm"
-                                placeholder="Expiry date"
+                                placeholder="Kadaluarsa"
                                 id="expiry_date"
                                 value="{{ $obat->options->expiry_date }}"
                                 wire:change="updateExpiryRestock('{{ $obat->rowId }}', $event.target.value, {{ $obat->id }})"
@@ -90,7 +90,10 @@
         <div class="card-footer">
             <div class="row align-items-center mb-3">
                 <div class="col-3">Total</div>
-                <div class="col-9 font-weight-bold text-right">
+                <div class="col-9 font-weight-bold text-right" wire:loading wire:target="updateQtyRestock,updatePriceRestock">
+                    loading...
+                </div>
+                <div class="col-9 font-weight-bold text-right" wire:loading.remove wire:target="updateQtyRestock,updatePriceRestock">
                     Rp {{ @$cart->total() }}
                 </div>
             </div>

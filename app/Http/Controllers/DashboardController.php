@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Obat;
+use App\Models\Restock;
+use App\Models\RestockItem;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
@@ -26,10 +28,24 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'ASC')
             ->get();
 
-        $data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $restocks = Restock::select(
+            DB::raw('sum(total) as sums'),
+            DB::raw("DATE_FORMAT(created_at,'%m') as monthKey")
+        )
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('monthKey')
+            ->orderBy('created_at', 'ASC')
+            ->get();
+
+        $grafikPenjualan = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $grafikRestock = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         foreach ($orders as $order) {
-            $data[$order->monthKey - 1] = $order->sums;
+            $grafikPenjualan[$order->monthKey - 1] = $order->sums;
+        }
+
+        foreach ($restocks as $restock) {
+            $grafikRestock[$restock->monthKey - 1] = $restock->sums;
         }
 
         return view('dashboard', [
@@ -37,7 +53,11 @@ class DashboardController extends Controller
             'bestSeller' => TransactionItem::groupBy('name')->selectRaw(
                 'sum(qty) as sum, name'
             )->take(5)->pluck('sum', 'name'),
-            'penjualan' => $data
+            'bestRestock' => RestockItem::groupBy('name')->selectRaw(
+                'sum(qty_restock) as sum, name'
+            )->take(5)->pluck('sum', 'name'),
+            'penjualan' => $grafikPenjualan,
+            'restock' => $grafikRestock
         ]);
     }
 }

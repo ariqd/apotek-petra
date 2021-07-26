@@ -10,4 +10,9 @@ class Supplier extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function restocks()
+    {
+        return $this->hasMany(Restock::class);
+    }
 }
