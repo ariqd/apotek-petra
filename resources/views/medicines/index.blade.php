@@ -21,6 +21,10 @@
                 });
                 $('.selectric').selectric();
 
+                $('.selectric').on('change', function () {
+                    $('#loading').show();      // load ajax loader
+                });
+
                 $('#kategori').on('change', function () {
                     document.forms['kategori'].submit();
                 });
