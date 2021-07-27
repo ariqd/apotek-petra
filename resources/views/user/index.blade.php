@@ -1,10 +1,10 @@
 <x-stisla-layout>
     <x-slot name="title">
-        User
+        Manajemen User
     </x-slot>
 
     <div class="section-header">
-        <h1>User</h1>
+        <h1>Manajemen User</h1>
         <button data-toggle="modal" data-target="#view-modal" data-url="{{ route('users.create') }}"
                 class="btn btn-primary btn-sm ml-3 link">
             <i class="fas fa-plus"></i> Tambah User

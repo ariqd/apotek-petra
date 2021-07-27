@@ -13,7 +13,7 @@ class ObatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('pemilik')->except('index');
+        $this->middleware('pemilik');
     }
 
     /**

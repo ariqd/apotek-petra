@@ -22,9 +22,10 @@
             </div>
             <div class="form-group">
                 <label for="role">Role</label>
-                <select name="role" id="role" class="form-control" {{ Auth::id() == $user->id ? 'disabled' : '' }}>
+                <select name="role" id="role" class="form-control" {{ $edit && Auth::id() == $user->id ? 'disabled' : '' }}>
                     <option value="Kasir" {{ $edit && $user->role == 'Kasir' ? 'selected' : '' }}>Kasir</option>
                     <option value="Pemilik" {{ $edit && $user->role == 'Pemilik' ? 'selected' : '' }}>Pemilik</option>
+                    <option value="Apoteker" {{ $edit && $user->role == 'Apoteker' ? 'selected' : '' }}>Apoteker</option>
                 </select>
             </div>
             <div class="form-group">

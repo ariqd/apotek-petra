@@ -1,10 +1,10 @@
 <x-stisla-layout>
     <x-slot name="title">
-        Supplier
+        Data Supplier
     </x-slot>
 
     <div class="section-header">
-        <h1>Supplier</h1>
+        <h1>Data Supplier</h1>
         <button data-toggle="modal" data-target="#view-modal" data-url="{{ route('supplier.create') }}"
                 class="btn btn-primary btn-sm ml-3 link">
             <i class="fas fa-plus"></i> Tambah Supplier

@@ -8,13 +8,14 @@ use App\Models\RestockItem;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('pemilik');
+//        $this->middleware('pemilik');
     }
 
     public function index()
